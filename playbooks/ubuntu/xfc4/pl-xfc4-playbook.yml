@@ -1,0 +1,10 @@
+- name: Xfce customizations
+  hosts: localhost
+  vars:
+  tasks:
+    - name: Set active xfce theme
+      xfconf:
+        channel: "xsettings"
+        property: "/Net/ThemeName"
+        value_type: "string"
+        value: "Greybird-dark"
