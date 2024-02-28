@@ -40,9 +40,9 @@
       clone: yes
       update: yes
   - name: Creates directory
-  ansible.builtin.file:
-    path: ~./icons
-    state: directory
+    ansible.builtin.file:
+      path: ~./icons
+      state: directory
   - name: Install Icon Theme
    ansible.builtin.script: ~/Reversal-icon-theme/install.sh -d ~/.icons
    args:
