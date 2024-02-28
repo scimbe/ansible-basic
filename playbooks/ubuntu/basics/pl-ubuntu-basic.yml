@@ -7,4 +7,8 @@
       - nano
       - net-tools
       - wireshark
-        
+      - unzip 
+      - gtk2-engines-pixbuf 
+      - gnome-icon-theme 
+      - tango-icon-theme 
+      - librsvg2-common
