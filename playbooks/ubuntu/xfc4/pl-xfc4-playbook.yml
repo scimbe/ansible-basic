@@ -52,7 +52,7 @@
     - name: Install Icon Theme
       command: chdir=~/Reversal-icon-theme /bin/bash install.sh -d ~/.icons
       
-    - name: Change wallpaper
+    - name: Change icon Theme Reversal-dark
       xfconf:
         channel: xfce4-desktop
         property: "/Net/IconThemeName"
