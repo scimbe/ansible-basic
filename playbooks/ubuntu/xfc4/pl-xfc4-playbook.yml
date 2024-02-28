@@ -47,7 +47,7 @@
       ansible.builtin.file:
         path: ~/.icons
         state: directory
-        mode: '0755'
+        mode: '0644'
 
     - name: Install Icon Theme
       command: chdir=~/Reversal-icon-theme /bin/bash install.sh -d ~/.icons
