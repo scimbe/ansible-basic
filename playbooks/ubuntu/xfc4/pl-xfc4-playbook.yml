@@ -21,7 +21,6 @@
         - monitor1
         - monitorDP-1
         - monitoreDP-0
-        git clone   ~/.themes
     - name: Clone a github repository for theme
     git:
       repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
