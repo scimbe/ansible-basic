@@ -44,13 +44,13 @@
       path: ~./icons
       state: directory
   - name: Install Icon Theme
-   ansible.builtin.script: ~/Reversal-icon-theme/install.sh -d ~/.icons
-   args:
+    ansible.builtin.script: ~/Reversal-icon-theme/install.sh -d ~/.icons
+    args:
      executable: /bin/bash
   - name: Change wallpaper
-   xfconf:
-     channel: xfce4-desktop
-     property: "/Net/IconThemeName"
-     value_type: string
-     value: ["Reversal-dark"]
+    xfconf:
+      channel: xfce4-desktop
+      property: "/Net/IconThemeName"
+      value_type: string
+      value: ["Reversal-dark"]
         
