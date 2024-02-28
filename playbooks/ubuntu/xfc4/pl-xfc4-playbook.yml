@@ -51,8 +51,6 @@
 
     - name: Install Icon Theme
       ansible.builtin.script: ~/Reversal-icon-theme/install.sh -d ~/.icons
-      args:
-        executable: /bin/bash
 
     - name: Change wallpaper
       xfconf:
