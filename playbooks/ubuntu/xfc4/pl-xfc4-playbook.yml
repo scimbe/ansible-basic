@@ -8,3 +8,21 @@
         property: "/Net/ThemeName"
         value_type: "string"
         value: "Greybird-dark"
+    - name: Download background TODO Checksum
+      get_url:
+        url: https://w.wallhaven.cc/full/d6/wallhaven-d6m3gl.png
+        dest: ./wallpaper-scimbe.png
+        mode: 0755
+    - name: Change wallpaper
+      xfconf:
+        channel: xfce4-desktop
+        property: "/backdrop/screen0/{{item}}/image-path"
+        value_type: string
+        value: ["./wallpaper-scimbe.png"]
+      loop:
+        - VNC-0
+        - VNC-1
+        - monitor0
+        - monitor1
+        - monitorDP-1
+        - monitoreDP-1
