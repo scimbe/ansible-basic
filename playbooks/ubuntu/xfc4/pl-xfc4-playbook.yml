@@ -50,8 +50,8 @@
         mode: '0755'
 
     - name: Install Icon Theme
-      ansible.builtin.script: cd ~/Reversal-icon-theme & /bin/bash install.sh -d ~/.icons
-
+      command: chdir=~/Reversal-icon-theme /bin/bash install.sh -d ~/.icons
+      
     - name: Change wallpaper
       xfconf:
         channel: xfce4-desktop
