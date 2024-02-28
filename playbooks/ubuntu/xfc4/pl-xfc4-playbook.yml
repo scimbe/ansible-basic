@@ -21,6 +21,7 @@
         value: ["./wallpaper-scimbe.png"]
       loop:
         - VNC-0
+        - monitorVNC-0
         - VNC-1
         - monitor0
         - monitor1
