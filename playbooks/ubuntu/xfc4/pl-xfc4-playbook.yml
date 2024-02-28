@@ -11,7 +11,7 @@
     - name: Download background TODO Checksum
       get_url:
         url: https://w.wallhaven.cc/full/d6/wallhaven-d6m3gl.png
-        dest: ./wallpaper-scimbe.png
+        dest: {{ lookup('ansible.builtin.env', 'PWD') }}/wallpaper-scimbe.png
         mode: 0644
     - name: Change wallpaper
       xfconf:
