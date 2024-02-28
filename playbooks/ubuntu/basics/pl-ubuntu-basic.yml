@@ -6,4 +6,5 @@
   - name : Install   loop:
         - nano
         - net-tools
-        = wireshark
+        - wireshark
+        
