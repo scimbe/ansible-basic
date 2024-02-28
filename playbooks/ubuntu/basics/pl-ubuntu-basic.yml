@@ -1,9 +1,9 @@
 - hosts: all
   become: yes
   tasks:
-  - name : Install nano
-    apt: name=nano state=latest update_cache=true
-  - name : Install net-tools
-    apt: name=net-tools state=latest update_cache=true
-  - name : Install wireshark
-    apt: name=wireshark  state=latest update_cache=true
+  - name : Install packages in loop
+    apt: name={{item}} state=latest update_cache=true
+  - name : Install   loop:
+        - nano
+        - net-tools
+        = wireshark
