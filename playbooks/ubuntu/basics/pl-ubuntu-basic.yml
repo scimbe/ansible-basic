@@ -3,8 +3,8 @@
   tasks:
   - name : Install packages in loop
     apt: name={{item}} state=latest update_cache=true
-  loop:
-    - nano
-    - net-tools
-    - wireshark
+    loop:
+      - nano
+      - net-tools
+      - wireshark
         
