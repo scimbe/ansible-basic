@@ -1,12 +1,13 @@
 - hosts: all
-  become: yes 
-  taks:
-  - name: Clone a github repository for theme
-        git:
-        repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
-        dest: ~/mininet/ 
+  become: yes
+  tasks:
+    - name: Clone a github repository for theme
+      git:
+        repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
+        dest: ~/mininet/
         clone: yes
         update: yes
         version: 2.3.0b2
-  - name: Install Icon Theme
-        command: chdir=~/ ~/mininet/util/install.sh
+
+    - name: Install Icon Theme
+      command: chdir=~/ ~/mininet/util/install.sh
