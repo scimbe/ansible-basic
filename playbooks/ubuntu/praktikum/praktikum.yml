@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Clone a github repository for theme
+    - name: Clone a github repository for mininet
       git:
         repo: https://github.com/mininet/mininet
         dest: ~/mininet/
@@ -9,5 +9,5 @@
         update: yes
         version: 2.3.0b2
 
-    - name: Install Icon Theme
+    - name: Install mininet
       command: chdir=~/ ~/mininet/util/install.sh
