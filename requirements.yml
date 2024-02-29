@@ -1,0 +1,10 @@
+#- src: https://github.com/staylorx/ansible-role-wls-prep.git
+#  version: master
+#  name: staylorx.wls-prep
+
+#- src: https://my-work-git-extravaganza.com
+#  version: 2.x
+#  name: coolplace.niftyrole
+
+#From Ansible Galaxy
+- src: 00willo.sublimetext-3
