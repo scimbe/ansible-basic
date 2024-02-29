@@ -13,7 +13,7 @@
         
     - name: Clone a github repository for mininet
       git:
-        repo: 'https://github.com/mininet'
+        repo: 'https://github.com/mininet/mininet'
         dest: "{{ lookup('env','HOME') }}/mininet"
         clone: yes
         update: yes
