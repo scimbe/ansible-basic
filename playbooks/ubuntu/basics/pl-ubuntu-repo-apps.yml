@@ -2,5 +2,5 @@
   become: yes 
   roles:
     - { role: chaosmail.sublime-text }
-    - { role: vcabourdin.chrome }    
+
  
