@@ -1,5 +1,4 @@
 - hosts: all
-  become: yes
   tasks:
   - name : Install packages in loop
     apt: name={{item}} state=latest update_cache=true
