@@ -23,7 +23,7 @@
 
     - name: Install the exam setup
       become: yes
-      command: chdir="{{ lookup('env','HOME') }}/mininet" ./mininet/util/install.sh -nfv
+      command: chdir="{{ lookup('env','HOME') }}" ./mininet/util/install.sh -nfv
 
     - name: Clone a github repository for the exams
       git:
