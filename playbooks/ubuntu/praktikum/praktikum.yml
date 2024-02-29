@@ -10,7 +10,7 @@
         version: 2.3.0b2
 
     - name: Install mininet
-      command: chdir=~/ ~/mininet/util/install.sh
+      command: chdir=~/ ~/mininet/util/install.sh -a
 
     - name: Clone a github repository for the exams
       git:
