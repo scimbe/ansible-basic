@@ -7,7 +7,23 @@
         state: latest
         update_cache: true
       loop:
-        - mininet
+        - python3-setuptools 
+        - python3 
+        - python3-pip
+        
+    - name: Clone a github repository for mininet
+      git:
+        repo: 'https://github.com/mininet'
+        dest: "{{ lookup('env','HOME') }}/mininet"
+        clone: yes
+        update: yes
+        
+    - name: change the git Protocol to https (firewall)
+      command: git config --global url."https://".insteadOf git://
+
+    - name: Install the exam setup
+      become: yes
+      command: chdir="{{ lookup('env','HOME') }}/mininet" /bin/bash ./mininet/util/mininet.sh -nfv
 
     - name: Clone a github repository for the exams
       git:
