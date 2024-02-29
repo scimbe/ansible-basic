@@ -1,29 +1,6 @@
 - hosts: all
-  vars:
-    - my_pkgs:
-      - google-chrome-stable
-      
+ 
   roles:
     - { role: chaosmail.sublime-text }
-    
-  tasks:
-
-  - name: Add specified repositories into sources list using specified filename
-    become: yes
-    apt_repository:
-      repo: deb {{ item.repo }} {{ item.add }}
-      state: present
-      filename: "{{ item.file }}"
-    with_items:
-      - repo: '[arch=amd64] http://dl.google.com/linux/chrome/deb/'
-        add: stable main
-        file: google-chrome
-
-  - name: Install packages
-    become: yes
-    apt:
-      state: installed
-      pkg: "{{ item }}"
-      update_cache: yes
-    with_items:
-      - "{{ my_pkgs }}"
+    - { role: vcabourdin.chrome }    
+ 
