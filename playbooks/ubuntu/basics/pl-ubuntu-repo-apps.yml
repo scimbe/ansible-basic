@@ -1,8 +1,8 @@
 - hosts: all
-vars:
-  my_pkgs:
-    - sublime-text
-    - google-chrome-stable
+  vars:
+    my_pkgs:
+      - sublime-text
+      - google-chrome-stable
 
 tasks:
   - name: Install GPG key for SubLimeText
