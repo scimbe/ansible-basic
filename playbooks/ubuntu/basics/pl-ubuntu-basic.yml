@@ -12,3 +12,4 @@
       - gnome-icon-theme 
       - tango-icon-theme 
       - librsvg2-common
+      - rpm
