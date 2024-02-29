@@ -7,4 +7,4 @@
 #  name: coolplace.niftyrole
 
 #From Ansible Galaxy
-- src: 00willo.sublimetext-3
+- src: chaosmail.sublime-text
