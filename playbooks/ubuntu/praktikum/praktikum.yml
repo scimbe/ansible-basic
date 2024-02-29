@@ -11,12 +11,11 @@
 
     - name: Clone a github repository for the exams
       git:
-        repo: 'https://github.com/scimbe/rn-practice'  # Korrigierte URL
-        dest: ~/rn-practice
+        repo: 'https://github.com/scimbe/rn-practice'
+        dest: "{{ lookup('env','HOME') }}/rn-practice"
         clone: yes
         update: yes
 
     - name: Install the exam setup
-      debug: var=lookup('env','HOME')
       become: yes
-      command: chdir={{ var }}/rn-practice ./setup/mininet.sh
+      command: chdir="{{ lookup('env','HOME') }}/rn-practice" ./setup/mininet.sh
