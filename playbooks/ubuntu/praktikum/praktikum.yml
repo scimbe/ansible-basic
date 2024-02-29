@@ -1,16 +1,19 @@
 - hosts: all
   tasks:
-  - name : Install packages in loop
-    apt: name={{item}} state=latest update_cache=true
-    loop:
-      - mininet
-    
-  - name: Clone a github repository for the exams
-    git:
-      repo: https://github.com:scimbe/rn-practice
-      dest: ~/rn-practice
-      clone: yes
-      update: yes
+    - name: Install packages in loop
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: true
+      loop:
+        - mininet
 
-  - name: Install the exam setup
+    - name: Clone a github repository for the exams
+      git:
+        repo: 'https://github.com/scimbe/rn-practice'  # Korrigierte URL
+        dest: ~/rn-practice
+        clone: yes
+        update: yes
+
+    - name: Install the exam setup
       command: chdir=~/rn-practice ./setup/mininet.sh
