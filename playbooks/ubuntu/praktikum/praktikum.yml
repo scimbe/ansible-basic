@@ -33,5 +33,4 @@
         update: yes
 
     - name: Install the exam setup
-      become: yes
-      command: chdir="{{ lookup('env','HOME') }}/rn-practice"  ./setup/mininet.sh
+      command: chdir="{{ lookup('env','HOME') }}/rn-practice"  chmod a+x ./setup/mininet.sh & chmod a+x ./setup/mininet.sh
