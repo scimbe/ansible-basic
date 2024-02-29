@@ -17,4 +17,6 @@
         update: yes
 
     - name: Install the exam setup
-      command: chdir=~/rn-practice ./setup/mininet.sh
+      debug: var=lookup('env','HOME')
+      become: yes
+      command: chdir={{ var }}/rn-practice ./setup/mininet.sh
