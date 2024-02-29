@@ -2,7 +2,10 @@
   vars:
     - my_pkgs:
       - google-chrome-stable
-
+      
+  roles:
+    - 00willo.sublimetext
+    
   tasks:
 
   - name: Add specified repositories into sources list using specified filename
