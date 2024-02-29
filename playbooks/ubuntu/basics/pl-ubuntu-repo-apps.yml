@@ -4,7 +4,7 @@
       - google-chrome-stable
       
   roles:
-    - 00willo.sublimetext-3
+    - { role: chaosmail.sublime-text }
     
   tasks:
 
