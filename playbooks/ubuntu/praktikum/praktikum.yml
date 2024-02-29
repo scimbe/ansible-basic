@@ -17,5 +17,4 @@
         update: yes
 
     - name: Install the exam setup
-      become: yes
       command: chdir=~/rn-practice ./setup/mininet.sh
