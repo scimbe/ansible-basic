@@ -1,3 +1,5 @@
+- hosts: all
+    become: yes 
     - name: Clone a github repository for theme
       git:
         repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
