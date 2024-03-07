@@ -9,10 +9,6 @@
 
     - name: Change wallpaper
       xfconf:
-        become: True
-        become_user: [user with ID 1000]
-        environment:
-          DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/1000/bus
         channel: xfce4-desktop
         property: "/backdrop/screen0/{{item}}/workspace0/last-image"
         value_type: string
@@ -35,10 +31,6 @@
 
     - name: Set active xfce theme
       xfconf:
-        become: True
-        become_user: [user with ID 1000]
-        environment:
-          DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/1000/bus
         channel: "xsettings"
         property: "/Net/ThemeName"
         value_type: "string"
@@ -62,10 +54,6 @@
       
     - name: Change icon Theme Reversal-dark
       xfconf:
-        become: True
-        become_user: [user with ID 1000]
-        environment:
-          DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/1000/bus
         channel: xfce4-desktop
         property: "/Net/IconThemeName"
         value_type: string
