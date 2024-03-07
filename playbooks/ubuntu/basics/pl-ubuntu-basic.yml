@@ -15,3 +15,4 @@
       - rpm
       - iputils-ping
       - openvswitch-switch-dpdk
+      - snapd
