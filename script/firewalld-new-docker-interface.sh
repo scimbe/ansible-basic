@@ -11,12 +11,6 @@ fi
 ZONE_NAME="$1"
 INTERFACE="$2"
 
-# Überprüfen, ob die Zone bereits existiert
-if ! firewall-cmd --get-zone-of-interface="$INTERFACE" &>/dev/null; then
-    echo "Error: The interface $INTERFACE does not exist or is not assigned to a zone."
-    exit 1
-fi
-
 sudo firewall-cmd --permanent --new-zone="$ZONE_NAME"
 sudo firewall-cmd --reload
 
@@ -26,6 +20,7 @@ if ! firewall-cmd --get-zones | grep -q "\<$ZONE_NAME\>"; then
     exit 1
 fi
 
+sudo firewall-cmd --zone="$ZONE_NAME" --add-interface="$INTERFACE" --permanent
 
 sudo firewall-cmd --zone="$ZONE_NAME" --add-masquerade 
 sudo firewall-cmd --permanent --zone="$ZONE_NAME"--set-target=ACCEPT
@@ -39,3 +34,10 @@ sudo firewall-cmd --list-all --zone="$ZONE_NAME"
 echo "Interface $INTERFACE successfully assigned to zone $ZONE_NAME."
 
 sudo firewall-cmd --zone=kasm --add-rich-rule='rule family="ipv4" destination  address="141.22.27.238" drop' --permanent 
+
+
+
+
+
+
+
