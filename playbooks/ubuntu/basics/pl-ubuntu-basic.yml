@@ -14,3 +14,4 @@
       - librsvg2-common
       - rpm
       - iputils-ping
+      - openvswitch-switch-dpdk
