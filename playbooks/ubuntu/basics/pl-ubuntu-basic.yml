@@ -32,10 +32,12 @@
         - xfce4-whiskermenu-plugin
 
     - name: Überprüfe, ob eine xfce4-Session läuft
+      become: yes
       shell: "pgrep -x xfce4-session"
       register: xfce_session
       ignore_errors: yes
 
     - name: Starte xfce4, falls nicht bereits gestartet
-      shell: "startxfce4"
+      become: no
+      shell: "/usr/bin/startxfce4"
       when: xfce_session.rc != 0
