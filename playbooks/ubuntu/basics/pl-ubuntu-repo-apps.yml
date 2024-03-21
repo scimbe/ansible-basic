@@ -1,6 +1,3 @@
-- hosts: all
-  become: yes 
-  roles:
-    - { role: chaosmail.sublime-text }
+
 
  
