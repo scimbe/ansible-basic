@@ -21,3 +21,8 @@
       - xfce4  
       - xfce4-goodies
       - lightdm
+      - firefox 
+      - xfce4-clipman-plugin  
+      - xfce4-eyes-plugin           \
+      - xfce4-systemload-plugin xfce4-weather-plugin     
+      - xfce4-whiskermenu-plugin
