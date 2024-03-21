@@ -30,6 +30,3 @@
         dest: "{{ lookup('env','HOME') }}/rn-practice"
         clone: yes
         update: yes
-
-    - name: Install the exam setup
-      command: chdir="{{ lookup('env','HOME') }}/rn-practice"  chmod a+x ./setup/mininet.sh && chmod a+x ./setup/mininet.sh
