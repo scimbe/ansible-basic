@@ -1,37 +1,41 @@
 - hosts: all
   become: yes
   tasks:
-  - name : Install packages in loop
-    apt: name={{item}} state=latest update_cache=true
-    loop:
-      - nano
-      - net-tools
-      - wireshark
-      - unzip 
-      - gtk2-engines-pixbuf 
-      - gnome-icon-theme 
-      - tango-icon-theme 
-      - librsvg2-common
-      - rpm
-      - iputils-ping
-      - openvswitch-switch-dpdk
-      - snapd
-      - whois
-      - nmap
-      - xfce4  
-      - xfce4-goodies
-      - lightdm
-      - firefox 
-      - xfce4-clipman-plugin  
-      - xfce4-eyes-plugin           \
-      - xfce4-systemload-plugin xfce4-weather-plugin     
-      - xfce4-whiskermenu-plugin
-      
-  - name: Überprüfe, ob eine xfce4-Session läuft
+    - name: Install packages in loop
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: true
+      loop:
+        - nano
+        - net-tools
+        - wireshark
+        - unzip
+        - gtk2-engines-pixbuf
+        - gnome-icon-theme
+        - tango-icon-theme
+        - librsvg2-common
+        - rpm
+        - iputils-ping
+        - openvswitch-switch-dpdk
+        - snapd
+        - whois
+        - nmap
+        - xfce4
+        - xfce4-goodies
+        - lightdm
+        - firefox
+        - xfce4-clipman-plugin
+        - xfce4-eyes-plugin
+        - xfce4-systemload-plugin
+        - xfce4-weather-plugin
+        - xfce4-whiskermenu-plugin
+
+    - name: Überprüfe, ob eine xfce4-Session läuft
       shell: "pgrep -x xfce4-session"
       register: xfce_session
       ignore_errors: yes
 
-  - name: Starte xfce4, falls nicht bereits gestartet
-    shell: "startxfce4"
-    when: xfce_session.rc != 0
+    - name: Starte xfce4, falls nicht bereits gestartet
+      shell: "startxfce4"
+      when: xfce_session.rc != 0
