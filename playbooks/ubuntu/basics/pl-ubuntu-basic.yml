@@ -39,5 +39,5 @@
 
     - name: Starte xfce4, falls nicht bereits gestartet
       become: no
-      shell: "/usr/bin/startxfce4"
+      shell: "/usr/bin/startxfce4 &"
       when: xfce_session.rc != 0
