@@ -10,7 +10,7 @@
     - name: Conky
       get_url:
         url: https://scimbe.de/script/conky
-        dest: ../.conkyrc
+        dest: ~/.conkyrc
         mode: 0644
         
     - name: Change wallpaper
