@@ -7,6 +7,12 @@
         dest: ./wallpaper-scimbe.png
         mode: 0644
 
+    - name: Conky
+      get_url:
+        url: https://scimbe.de/script/conky
+        dest: ../.conkyrc
+        mode: 0644
+        
     - name: Change wallpaper
       xfconf:
         channel: xfce4-desktop
