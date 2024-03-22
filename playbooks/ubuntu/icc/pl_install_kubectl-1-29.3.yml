@@ -9,13 +9,13 @@
 
     - name: Download the latest kubectl release
       uri:
-        url: "https://dl.k8s.io/release/{{ version.content | trim }}/bin/linux/amd64/kubectl"
+        url: "https://dl.k8s.io/release/v1.29.3/bin/linux/amd64/kubectl"
         dest: "~/kubectl"
       register: kubectl
 
     - name: Download the kubectl checksum file
       uri:
-        url: "https://dl.k8s.io/{{ version.content | trim }}/bin/linux/amd64/kubectl.sha256"
+        url: "https://dl.k8s.io/release/v1.29.3/bin/linux/amd64/kubectl.sha256"
         dest: "~/kubectl.sha256"
 
     - name: Validate the kubectl binary against the checksum file
