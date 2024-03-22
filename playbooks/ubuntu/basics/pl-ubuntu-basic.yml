@@ -32,6 +32,8 @@
         - xfce4-whiskermenu-plugin
         - xfce4-settings 
         - dbus-x11 
+        - conky-all
+        - conky-manager
 
     - name: Überprüfe, ob eine xfce4-Session läuft
       become: yes
