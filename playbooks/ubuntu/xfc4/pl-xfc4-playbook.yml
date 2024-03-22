@@ -31,9 +31,9 @@
 
     - name: Set active xfce theme
       xfconf:
-        channel: "xsettings"
+        channel: xsettings
         property: "/Net/ThemeName"
-        value_type: "string"
+        value_type: string
         value: "PRO-dark-XFCE-4.14"
 
     - name: Clone a github repository for icons
