@@ -3,4 +3,4 @@ kind: Space
 metadata:
   name: mininet-rn
 spec:
-  account: wte586-default
+  account: wte586-account
