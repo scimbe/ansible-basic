@@ -32,3 +32,17 @@
       - result.stdout == expected
     fail_msg: "{{ result.stdout }}"
     success_msg: "{{ result.stdout }}"
+
+- name: Move kubectl and change permissions
+  file:
+    src: "{{ kubectl.path }}"
+    dest: /usr/local/bin/kubectl
+    state: hard
+    owner: root
+    group: root
+    mode: "+x"
+
+- name: Check if kubectl is installed
+  shell: kubectl version --client
+  register: client
+  failed_when: client.rc > 1
