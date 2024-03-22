@@ -152,8 +152,8 @@ ${color4}${font Monospace:style=Bold:pixelsize=12}DISK USAGE ${color6}${hr 2 }
 ${color}${font Monospace:style=Bold:pixelsize=11}COMPUTER:${font Monospace:size=7} ${alignr}${fs_used /}/${fs_size /}
 ${alignr}${color2}${fs_used_perc /}% ${color3}${fs_bar 5,120 /}
 
-${color4}${font Monospace:style=Bold:pixelsize=12}INTERNET ${color6}${hr 2 }
-#${color}This IP: ${alignr} ${color}${addr eth0}
+${font Monospace:style=Bold:pixelsize=11}${color}INET:${font Monospace:size=7}
+${color}This IP: ${alignr} ${color}${addr eth0}
 
 ${color}${font Monospace:style=Bold:pixelsize=11}DOWN SPEED:${font Monospace:size=7} ${alignr} ${color2}${downspeed eth0} kb/s 
 ${alignr}${color BBCCDD}${downspeedgraph eth0 20,290 EF5A29 EF5A29}
