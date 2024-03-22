@@ -62,6 +62,6 @@
     - name: Disable Removable Devices on Desktop
       xfconf:
         channel: xfce4-desktop
-        property: "/desktop-icons/show-removable"
+        property: "/desktop-icons/file-icons/show-removable"
         value_type: bool
         value: "false"
