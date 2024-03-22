@@ -64,4 +64,4 @@
         channel: xfce4-desktop
         property: "/desktop-icons/show-removable"
         value_type: bool
-        value: false
+        value: "false"
