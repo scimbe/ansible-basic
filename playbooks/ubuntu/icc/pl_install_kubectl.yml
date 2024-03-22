@@ -9,26 +9,26 @@
 
     - name: Download the latest kubectl release
       uri:
-        url: "https://dl.k8s.io/release/{{ version.content | trim }}/bin/linux/arm/kubectl"
-        dest: "/home/becke/kubectl"
+        url: "https://dl.k8s.io/release/{{ version.content | trim }}/bin/linux/amd64/kubectl"
+        dest: "~/kubectl"
       register: kubectl
 
     - name: Download the kubectl checksum file
       uri:
-        url: "https://dl.k8s.io/{{ version.content | trim }}/bin/linux/arm/kubectl.sha256"
-        dest: "/home/becke/kubectl.sha256"
+        url: "https://dl.k8s.io/{{ version.content | trim }}/bin/linux/amd64/kubectl.sha256"
+        dest: "~/kubectl.sha256"
 
     - name: Validate the kubectl binary against the checksum file
-      shell: "echo \"$(cat /home/{{ ansible_user }}/kubectl.sha256)  /home/{{ ansible_user }}/kubectl\" | sha256sum --check"
+      shell: "echo \"$(cat ~/kubectl.sha256)  ~/kubectl\" | sha256sum --check"
       args:
-        chdir: "/home/becke"
+        chdir: "~/"
       register: result
       failed_when: "'OK' not in result.stdout"
 
     - name: Move kubectl and change permissions
       become: yes
       copy:
-        src: "/home/becke/kubectl"
+        src: "~/kubectl"
         dest: /usr/local/bin/kubectl
         remote_src: yes
         owner: root
