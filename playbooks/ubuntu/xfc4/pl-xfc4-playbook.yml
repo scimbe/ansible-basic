@@ -3,7 +3,7 @@
   tasks:
     - name: Download background TODO Checksum
       get_url:
-        url: https://w.wallhaven.cc/full/d6/wallhaven-d6m3gl.png
+        url: https://scimbe.de/wall/wallpaper-big.png
         dest: ./wallpaper-scimbe.png
         mode: 0644
 
