@@ -30,6 +30,7 @@
         - xfce4-systemload-plugin
         - xfce4-weather-plugin
         - xfce4-whiskermenu-plugin
+        - xfce4-settings 
 
     - name: Überprüfe, ob eine xfce4-Session läuft
       become: yes
