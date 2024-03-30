@@ -10,20 +10,11 @@
         - python3-setuptools 
         - python3 
         - python3-pip
+        - wireshark-gtk
+        - firefox
+        - wget 
+        - curl
         
-    - name: Clone a github repository for mininet
-      git:
-        repo: 'https://github.com/mininet/mininet'
-        dest: "{{ lookup('env','HOME') }}/mininet"
-        clone: yes
-        update: yes
-        
-    - name: change the git Protocol to https (firewall)
-      command: git config --global url."https://".insteadOf git://
-
-    - name: Install the exam setup
-      command: chdir="{{ lookup('env','HOME') }}" ./mininet/util/install.sh -nfv
-
     - name: Clone a github repository for the exams
       git:
         repo: 'https://github.com/scimbe/rn-practice'
