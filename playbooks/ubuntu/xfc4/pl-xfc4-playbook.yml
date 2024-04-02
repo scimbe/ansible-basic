@@ -72,3 +72,18 @@
         property: "/desktop-icons/file-icons/show-removable"
         value_type: bool
         value: "false"
+
+
+    - name: disable filesystem
+      xfconf:
+        channel: xfce4-desktop
+        property: "/desktop-icons/file-icons/show-filesystem"
+        value_type: bool
+        value: "false"
+        
+    - name: disable home
+      xfconf:
+        channel: xfce4-desktop
+        property: "/desktop-icons/file-icons/show-home"
+        value_type: bool
+        value: "false"
