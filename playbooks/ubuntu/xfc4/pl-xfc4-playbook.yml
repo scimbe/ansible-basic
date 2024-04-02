@@ -4,13 +4,13 @@
     - name: Download background TODO Checksum
       get_url:
         url: https://scimbe.de/wall/wallpaper-big.png
-        dest: /config/wallpaper-scimbe.png
+        dest: ~/wallpaper-scimbe.png
         mode: 0644
 
     - name: Conky
       get_url:
         url: https://scimbe.de/script/conky
-        dest: /config/.conkyrc
+        dest: ~/.conkyrc
         mode: 0644
         
     - name: Change wallpaper
@@ -18,7 +18,7 @@
         channel: xfce4-desktop
         property: "/backdrop/screen0/{{item}}/workspace0/last-image"
         value_type: string
-        value: "/config/wallpaper-scimbe.png"
+        value: "~/wallpaper-scimbe.png"
       loop:
         - VNC-0
         - monitorVNC-0
@@ -31,7 +31,7 @@
     - name: Clone a github repository for theme
       git:
         repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
-        dest: /config/.themes
+        dest: ~/.themes
         clone: yes
         update: yes
 
@@ -46,7 +46,7 @@
     - name: Clone a github repository for icons
       git:
         repo: https://github.com/yeyushengfan258/Reversal-icon-theme 
-        dest: /config/Reversal-icon-theme
+        dest: ~/Reversal-icon-theme
         clone: yes
         update: yes
 
@@ -57,7 +57,7 @@
         mode: '0755'
 
     - name: Install Icon Theme
-      command: chdir=/config/Reversal-icon-theme /bin/bash install.sh -d /config/.icons
+      command: chdir=~/Reversal-icon-theme /bin/bash install.sh -d ~/.icons
       
     - name: Change icon Theme Reversal-dark
       xfconf:
