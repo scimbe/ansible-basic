@@ -1,6 +1,14 @@
 - name: Xfce customizations
   hosts: localhost
   tasks:
+    - name: Warte auf den xfconfd-Dienst
+      ansible.builtin.command: pgrep -a xfconfd
+      register: pgrep_result
+      until: pgrep_result.stdout != ""
+      retries: 10
+      delay: 5
+      ignore_errors: yes
+
     - name: Download background TODO Checksum
       get_url:
         url: https://scimbe.de/wall/wallpaper-big.png
