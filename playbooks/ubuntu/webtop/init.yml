@@ -1,8 +1,9 @@
 ---
-- name: Umwandlung des Shell-Skripts in ein Ansible-Playbook
+- name: Create Setup for webtop
   hosts: all
   become: yes
   vars:
+    test_url: "http://www.example.com"
     url: "https://scimbe.de/script/install-xubuntu.sh"
     target_file: "./install-xubuntu.sh"
 
@@ -11,66 +12,80 @@
       ansible.builtin.wait_for:
         path: /tmp/.X11-unix/
         state: present
+      register: vnc_check
       ignore_errors: yes
 
-    - name: Download des Installationsskripts
-      ansible.builtin.get_url:
-        url: "{{ url }}"
-        dest: "{{ target_file }}"
-        mode: '0755'
-      register: download_result
-      until: download_result is succeeded
+    - name: Überprüfung der Internetverbindung
+      ansible.builtin.uri:
+        url: "{{ test_url }}"
+        method: GET
+      register: internet_check
+      until: internet_check is succeeded
       retries: 5
-      delay: 1
+      delay: 5
+      when: vnc_check is succeeded
 
-    - name: Aktualisierung der Paketlisten und Installation erforderlicher Pakete
-      ansible.builtin.apt:
-        update_cache: yes
-        name:
-          - ca-certificates
-          - ansible
-          - openssh-server
-          - xpra
-          - python3-gi-cairo
-          - wget
-          - sshpass
-          - conky
-        state: present
+    - block:
+        - name: Download des Installationsskripts
+          ansible.builtin.get_url:
+            url: "{{ url }}"
+            dest: "{{ target_file }}"
+            mode: '0755'
+          register: download_result
+          until: download_result is succeeded
+          retries: 5
+          delay: 1
 
-    - name: Hinzufügen des XPRA-Schlüssels und Repositories
-      ansible.builtin.apt_key:
-        url: https://xpra.org/xpra.asc
-        state: present
-      ansible.builtin.apt_repository:
-        repo: 'deb https://xpra.org/ $(ansible_distribution_release) main'
-        state: present
+        - name: Aktualisierung der Paketlisten und Installation erforderlicher Pakete
+          ansible.builtin.apt:
+            update_cache: yes
+            name:
+              - ca-certificates
+              - ansible
+              - openssh-server
+              - xpra
+              - python3-gi-cairo
+              - wget
+              - sshpass
+              - conky
+            state: present
 
-    - name: Ausführung des Installations-Skripts
-      ansible.builtin.command:
-        cmd: "./install-xubuntu.sh"
-        chdir: "/config"
-      become: yes
-      become_user: abc
+        - name: Hinzufügen des XPRA-Schlüssels und Repositories
+          block:
+            - ansible.builtin.apt_key:
+                url: https://xpra.org/xpra.asc
+                state: present
+            - ansible.builtin.apt_repository:
+                repo: 'deb https://xpra.org/ $(ansible_distribution_release) main'
+                state: present
 
-    - name: Start des SSH-Services
-      ansible.builtin.service:
-        name: ssh
-        state: started
+        - name: Ausführung des Installations-Skripts
+          ansible.builtin.command:
+            cmd: "./install-xubuntu.sh"
+            chdir: "/config"
+          become: yes
+          become_user: abc
 
-    - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
-      ansible.builtin.shell: |
-        nohup conky > /dev/null 2>&1 &
-        nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
-      become: yes
-      become_user: abc
-      args:
-        chdir: "/"
+        - name: Start des SSH-Services
+          ansible.builtin.service:
+            name: ssh
+            state: started
 
-    - name: Setzen des Passworts für Benutzer 'abc'
-      ansible.builtin.user:
-        name: abc
-        password: "{{ 'mininet' | password_hash('sha512') }}"
+        - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
+          ansible.builtin.shell: |
+            nohup conky > /dev/null 2>&1 &
+            nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
+          become: yes
+          become_user: abc
+          args:
+            chdir: "/"
 
-    - name: Festlegen von Umgebungsvariablen
-      ansible.builtin.set_fact:
-        CADS_COMPLETE: true
+        - name: Setzen des Passworts für Benutzer 'abc'
+          ansible.builtin.user:
+            name: abc
+            password: "{{ 'mininet' | password_hash('sha512') }}"
+
+        - name: Festlegen von Umgebungsvariablen
+          ansible.builtin.set_fact:
+            CADS_COMPLETE: true
+      when: internet_check is succeeded
