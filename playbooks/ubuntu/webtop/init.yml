@@ -42,13 +42,15 @@
               - conky
             state: present
 
-        - name: Ausführung des Installations-Skripts
-          ansible.builtin.command:
-            cmd: "./install-xubuntu.sh"
-            chdir: "/config"
+        - name: Ausführung von 'install-xubuntu.sh' 
+          ansible.builtin.shell: |
+            cd /config
+            nohup ./install-xubuntu.sh
           become: yes
           become_user: abc
-
+          args:
+            chdir: "/"
+            
         - name: Start des SSH-Services
           ansible.builtin.service:
             name: ssh
