@@ -8,13 +8,6 @@
     target_file: "./install-xubuntu.sh"
 
   tasks:
-    - name: Überprüfung des VNC-Server-Prozesses
-      ansible.builtin.wait_for:
-        path: /tmp/.X11-unix/
-        state: present
-      register: vnc_check
-      ignore_errors: yes
-
     - name: Überprüfung der Internetverbindung
       ansible.builtin.uri:
         url: "{{ test_url }}"
@@ -23,14 +16,13 @@
       until: internet_check is succeeded
       retries: 1000
       delay: 5
-      when: vnc_check is succeeded
 
     - block:
         - name: Download des Installationsskripts
           ansible.builtin.get_url:
             url: "{{ url }}"
             dest: "{{ target_file }}"
-            mode: '0755'
+            mode: '0775'
           register: download_result
           until: download_result is succeeded
           retries: 5
@@ -61,7 +53,7 @@
 
         - name: Ausführung des Installations-Skripts
           ansible.builtin.command:
-            cmd: "./install-xubuntu.sh"
+            cmd: "bash -c ./install-xubuntu.sh"
             chdir: "/config"
           become: yes
           become_user: abc
