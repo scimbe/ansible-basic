@@ -97,3 +97,12 @@
         property: "/desktop-icons/file-icons/show-home"
         value_type: bool
         value: "false"
+        
+    - name: Ausführung von 'conky' im Hintergrund
+      ansible.builtin.shell: |
+        nohup conky > /dev/null 2>&1 &
+        nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
+      become: yes
+      become_user: abc
+      args:
+        chdir: "/"
