@@ -1,0 +1,76 @@
+---
+- name: Umwandlung des Shell-Skripts in ein Ansible-Playbook
+  hosts: all
+  become: yes
+  vars:
+    url: "https://scimbe.de/script/install-xubuntu.sh"
+    target_file: "./install-xubuntu.sh"
+
+  tasks:
+    - name: Überprüfung des VNC-Server-Prozesses
+      ansible.builtin.wait_for:
+        path: /tmp/.X11-unix/
+        state: present
+      ignore_errors: yes
+
+    - name: Download des Installationsskripts
+      ansible.builtin.get_url:
+        url: "{{ url }}"
+        dest: "{{ target_file }}"
+        mode: '0755'
+      register: download_result
+      until: download_result is succeeded
+      retries: 5
+      delay: 1
+
+    - name: Aktualisierung der Paketlisten und Installation erforderlicher Pakete
+      ansible.builtin.apt:
+        update_cache: yes
+        name:
+          - ca-certificates
+          - ansible
+          - openssh-server
+          - xpra
+          - python3-gi-cairo
+          - wget
+          - sshpass
+          - conky
+        state: present
+
+    - name: Hinzufügen des XPRA-Schlüssels und Repositories
+      ansible.builtin.apt_key:
+        url: https://xpra.org/xpra.asc
+        state: present
+      ansible.builtin.apt_repository:
+        repo: 'deb https://xpra.org/ $(ansible_distribution_release) main'
+        state: present
+
+    - name: Ausführung des Installations-Skripts
+      ansible.builtin.command:
+        cmd: "./install-xubuntu.sh"
+        chdir: "/config"
+      become: yes
+      become_user: abc
+
+    - name: Start des SSH-Services
+      ansible.builtin.service:
+        name: ssh
+        state: started
+
+    - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
+      ansible.builtin.shell: |
+        nohup conky > /dev/null 2>&1 &
+        nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
+      become: yes
+      become_user: abc
+      args:
+        chdir: "/"
+
+    - name: Setzen des Passworts für Benutzer 'abc'
+      ansible.builtin.user:
+        name: abc
+        password: "{{ 'mininet' | password_hash('sha512') }}"
+
+    - name: Festlegen von Umgebungsvariablen
+      ansible.builtin.set_fact:
+        CADS_COMPLETE: true
