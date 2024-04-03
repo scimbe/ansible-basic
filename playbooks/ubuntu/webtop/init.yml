@@ -42,15 +42,6 @@
               - conky
             state: present
 
-        - name: Hinzufügen des XPRA-Schlüssels und Repositories
-          block:
-            - ansible.builtin.apt_key:
-                url: https://xpra.org/xpra.asc
-                state: present
-            - ansible.builtin.apt_repository:
-                repo: 'deb https://xpra.org/ $(ansible_distribution_release) main'
-                state: present
-
         - name: Ausführung des Installations-Skripts
           ansible.builtin.command:
             cmd: "bash -c ~/install-xubuntu.sh"
