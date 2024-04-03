@@ -21,7 +21,7 @@
         method: GET
       register: internet_check
       until: internet_check is succeeded
-      retries: 5
+      retries: 1000
       delay: 5
       when: vnc_check is succeeded
 
