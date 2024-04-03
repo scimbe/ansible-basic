@@ -1,23 +1,51 @@
 - hosts: all
+  become: yes  # Setze `become: yes` hier, um es für alle Tasks anzuwenden
   tasks:
-    - name: Install packages in loop
-      become: yes
+    - name: Aktualisiere den APT-Paket-Cache
       apt:
-        name: "{{ item }}"
+        update_cache: yes
+        cache_valid_time: 3600  # Aktualisiert den Cache nur, wenn er älter als 1 Stunde ist
+
+    - name: Installiere mehrere Pakete gleichzeitig
+      apt:
+        name:
+          - python3-setuptools
+          - python3
+          - python3-pip
+          - wireshark-gtk
+          - firefox
+          - wget
+          - curl
+          - dnsmasq
+          - netcat
+          - openvpn
+          - unzip
+          - whois
+          - nmap
+          - snapd
+          - arping
+          - dsniff
+          - frr
+          - iperf3
+          - openvswitch-switch
+          - traceroute
+          - hping3
         state: latest
-        update_cache: true
-      loop:
-        - python3-setuptools 
-        - python3 
-        - python3-pip
-        - wireshark-gtk
-        - firefox
-        - wget 
-        - curl
-        
+
     - name: Clone a github repository for the exams
       git:
         repo: 'https://github.com/scimbe/rn-practice'
-        dest: "{{ lookup('env','HOME') }}/rn-practice"
+        dest: "/home/mininet/rn-practice"
         clone: yes
         update: yes
+      become_user: abc  # `become_user` sollte innerhalb des Tasks sein, falls nur für diesen Task angewendet
+
+    - name: Installiere searchsploit mit snap
+      community.general.snap:
+        name: searchsploit
+        state: present
+
+    - name: Installiere pytest mit pip
+      ansible.builtin.pip:
+        name: pytest
+        state: present
