@@ -39,7 +39,6 @@
 
     - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
       ansible.builtin.shell: |
-        nohup conky > /dev/null 2>&1 &
         nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
       become: yes
       become_user: abc
