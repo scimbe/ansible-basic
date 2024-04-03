@@ -44,7 +44,7 @@
 
         - name: Ausführung des Installations-Skripts
           ansible.builtin.command:
-            cmd: "bash -c ~/install-xubuntu.sh"
+            cmd: "./install-xubuntu.sh"
             chdir: "/config"
           become: yes
           become_user: abc
