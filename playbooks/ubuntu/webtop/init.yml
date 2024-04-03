@@ -5,7 +5,7 @@
   vars:
     test_url: "http://www.example.com"
     url: "https://scimbe.de/script/install-xubuntu.sh"
-    target_file: "./install-xubuntu.sh"
+    target_file: "/config/install-xubuntu.sh"
 
   tasks:
     - name: Überprüfung der Internetverbindung
