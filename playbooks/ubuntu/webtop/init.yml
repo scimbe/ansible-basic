@@ -28,49 +28,53 @@
           retries: 5
           delay: 1
 
-        - name: Aktualisierung der Paketlisten und Installation erforderlicher Pakete
-          ansible.builtin.apt:
-            update_cache: yes
-            name:
-              - ca-certificates
-              - ansible
-              - openssh-server
-              - xpra
-              - python3-gi-cairo
-              - wget
-              - sshpass
-              - conky
-            state: present
+    - name: Aktualisierung der Paketlisten, falls notwendig
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Der Cache wird nur aktualisiert, wenn er älter als 1 Stunde ist
 
-        - name: Ausführung von 'install-xubuntu.sh' 
-          ansible.builtin.shell: |
-            cd /config
-            nohup ./install-xubuntu.sh
-          become: yes
-          become_user: abc
-          args:
-            chdir: "/"
-            
-        - name: Start des SSH-Services
-          ansible.builtin.service:
-            name: ssh
-            state: started
+    - name: Installation erforderlicher Pakete
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - ansible
+          - openssh-server
+          - xpra
+          - python3-gi-cairo
+          - wget
+          - sshpass
+          - conky
+        state: present
 
-        - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
-          ansible.builtin.shell: |
-            nohup conky > /dev/null 2>&1 &
-            nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
-          become: yes
-          become_user: abc
-          args:
-            chdir: "/"
+    - name: Ausführung von 'install-xubuntu.sh'
+      ansible.builtin.shell: |
+        cd /config
+        nohup ./install-xubuntu.sh &
+      become: yes
+      become_user: abc
+      args:
+        chdir: "/"
 
-        - name: Setzen des Passworts für Benutzer 'abc'
-          ansible.builtin.user:
-            name: abc
-            password: "{{ 'mininet' | password_hash('sha512') }}"
+    - name: Start des SSH-Services
+      ansible.builtin.service:
+        name: ssh
+        state: started
 
-        - name: Festlegen von Umgebungsvariablen
-          ansible.builtin.set_fact:
-            CADS_COMPLETE: true
+    - name: Ausführung von 'connect-to-mininet.sh' und 'conky' im Hintergrund
+      ansible.builtin.shell: |
+        nohup conky > /dev/null 2>&1 &
+        nohup ./connect-to-mininet.sh > /dev/null 2>&1 &
+      become: yes
+      become_user: abc
+      args:
+        chdir: "/"
+
+    - name: Setzen des Passworts für Benutzer 'abc'
+      ansible.builtin.user:
+        name: abc
+        password: "{{ 'mininet' | password_hash('sha512') }}"
+
+    - name: Festlegen von Umgebungsvariablen
+      ansible.builtin.set_fact:
+        CADS_COMPLETE: true
       when: internet_check is succeeded
