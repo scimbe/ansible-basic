@@ -22,7 +22,7 @@
           ansible.builtin.get_url:
             url: "{{ url }}"
             dest: "{{ target_file }}"
-            mode: '0775'
+            mode: '0777'
           register: download_result
           until: download_result is succeeded
           retries: 5
