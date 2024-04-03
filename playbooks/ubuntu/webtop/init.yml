@@ -3,8 +3,6 @@
   become: yes
   vars:
     test_url: "http://www.example.com"
-    url: "https://scimbe.de/script/install-xubuntu.sh"
-    target_file: "/config/install-xubuntu.sh"
 
   tasks:
     - name: Überprüfung der Internetverbindung
@@ -15,17 +13,6 @@
       until: internet_check is succeeded
       retries: 1000
       delay: 5
-
-    - block:
-        - name: Download des Installationsskripts
-          ansible.builtin.get_url:
-            url: "{{ url }}"
-            dest: "{{ target_file }}"
-            mode: '0777'
-          register: download_result
-          until: download_result is succeeded
-          retries: 5
-          delay: 1
 
     - name: Aktualisierung der Paketlisten, falls notwendig
       ansible.builtin.apt:
@@ -44,15 +31,6 @@
           - sshpass
           - conky
         state: present
-
-    - name: Ausführung von 'install-xubuntu.sh'
-      ansible.builtin.shell: |
-        cd /config
-        nohup ./install-xubuntu.sh &
-      become: yes
-      become_user: abc
-      args:
-        chdir: "/"
 
     - name: Start des SSH-Services
       ansible.builtin.service:
