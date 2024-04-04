@@ -3,17 +3,17 @@
   become: true
   tasks:
     - name: Download background TODO Checksum
-      become_user: abc
       get_url:
         url: https://scimbe.de/wall/wallpaper-big.png
-        dest: ~/wallpaper-scimbe.png
+        dest: /config/wallpaper-scimbe.png
         mode: 0666
+        
     - name: Conky
-      become_user: abc
       get_url:
         url: https://scimbe.de/script/conky
-        dest: ~/.conkyrc
+        dest: /config/.conkyrc
         mode: 0666
+        
     - name: Disable Removable Devices on Desktop
       become_user: abc
       xfconf:
@@ -46,12 +46,7 @@
       args:
         chdir: "/"
         
-    - name: Setzen des Passworts für Benutzer 'abc'
-      become_user: abc
-      ansible.builtin.user:
-        name: abc
-        password: "{{ 'mininet' | password_hash('sha512') }}"
-        
+
     - name: Change wallpaper
       become_user: abc
       xfconf:
@@ -88,16 +83,15 @@
       become_user: abc
       git:
         repo: https://github.com/yeyushengfan258/Reversal-icon-theme 
-        dest: ~/Reversal-icon-theme
+        dest: /conf/Reversal-icon-theme
         clone: yes
         update: yes
 
     - name: Creates directory
-      become_user: abc
       ansible.builtin.file:
         path: /config/.icons
         state: directory
-        mode: '0755'
+        mode: '0666'
 
     - name: Install Icon Theme
       become_user: abc
@@ -110,5 +104,10 @@
         property: "/Net/IconThemeName"
         value_type: string
         value: "Reversal-dark"
-
+        
+    - name: Setzen des Passworts für Benutzer 'abc'
+      ansible.builtin.user:
+        name: abc
+        password: "{{ 'mininet' | password_hash('sha512') }}"
+        
    
