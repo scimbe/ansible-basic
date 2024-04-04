@@ -2,16 +2,19 @@
   hosts: localhost
   tasks:
     - name: Download background TODO Checksum
+      become_user: abc
       get_url:
         url: https://scimbe.de/wall/wallpaper-big.png
         dest: ~/wallpaper-scimbe.png
         mode: 0666
     - name: Conky
+      become_user: abc
       get_url:
         url: https://scimbe.de/script/conky
         dest: ~/.conkyrc
         mode: 0666
     - name: Disable Removable Devices on Desktop
+      become_user: abc
       xfconf:
         channel: xfce4-desktop
         property: "/desktop-icons/file-icons/show-removable"
@@ -20,6 +23,7 @@
 
 
     - name: disable filesystem
+      become_user: abc
       xfconf:
         channel: xfce4-desktop
         property: "/desktop-icons/file-icons/show-filesystem"
@@ -27,6 +31,7 @@
         value: "false"
         
     - name: disable home
+      become_user: abc
       xfconf:
         channel: xfce4-desktop
         property: "/desktop-icons/file-icons/show-home"
@@ -34,17 +39,20 @@
         value: "false"
         
     - name: Ausführung von 'conky' im Hintergrund
+      become_user: abc
       ansible.builtin.shell: |
         nohup conky > /dev/null 2>&1 &
       args:
         chdir: "/"
         
     - name: Setzen des Passworts für Benutzer 'abc'
+      become_user: abc
       ansible.builtin.user:
         name: abc
         password: "{{ 'mininet' | password_hash('sha512') }}"
         
     - name: Change wallpaper
+      become_user: abc
       xfconf:
         channel: xfce4-desktop
         property: "/backdrop/screen0/{{item}}/workspace0/last-image"
@@ -60,6 +68,7 @@
         - monitoreDP-0
 
     - name: Clone a github repository for theme
+      become_user: abc
       git:
         repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
         dest: ~/.themes
@@ -67,6 +76,7 @@
         update: yes
 
     - name: Set active xfce theme
+      become_user: abc
       xfconf:
         channel: xsettings
         property: "/Net/ThemeName"
@@ -74,6 +84,7 @@
         value: "PRO-dark-XFCE-4.14"
 
     - name: Clone a github repository for icons
+      become_user: abc
       git:
         repo: https://github.com/yeyushengfan258/Reversal-icon-theme 
         dest: ~/Reversal-icon-theme
@@ -81,15 +92,18 @@
         update: yes
 
     - name: Creates directory
+      become_user: abc
       ansible.builtin.file:
         path: /config/.icons
         state: directory
         mode: '0755'
 
     - name: Install Icon Theme
+      become_user: abc
       command: chdir=~/Reversal-icon-theme /bin/bash install.sh -d ~/.icons
       
     - name: Change icon Theme Reversal-dark
+      become_user: abc
       xfconf:
         channel: xfce4-desktop
         property: "/Net/IconThemeName"
