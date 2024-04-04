@@ -1,5 +1,6 @@
 - name: Xfce customizations
   hosts: localhost
+  become: true
   tasks:
     - name: Download background TODO Checksum
       become_user: abc
