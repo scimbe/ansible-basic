@@ -36,9 +36,9 @@
     - name: Ausführung von 'conky' im Hintergrund
       ansible.builtin.shell: |
         nohup conky > /dev/null 2>&1 &
-      become_user: abc
       args:
         chdir: "/"
+        
     - name: Setzen des Passworts für Benutzer 'abc'
       ansible.builtin.user:
         name: abc
