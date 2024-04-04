@@ -105,3 +105,7 @@
       become_user: abc
       args:
         chdir: "/"
+    - name: Setzen des Passworts für Benutzer 'abc'
+      ansible.builtin.user:
+        name: abc
+        password: "{{ 'mininet' | password_hash('sha512') }}"
