@@ -14,6 +14,7 @@ INTERFACE="$2"
 
 # Überprüfen, ob die Zone korrekt ist
 if  firewall-cmd --get-zones | grep -q "\<$ZONE_NAME\>"; then
+        echo "delete old zone"
         sudo firewall-cmd --permanent --delete-zone="$ZONE_NAME"
         sudo firewall-cmd --reload
 fi
@@ -44,12 +45,4 @@ sudo  firewall-cmd --reload
 
 echo "Interface $INTERFACE successfully assigned to zone $ZONE_NAME."
 
-sudo firewall-cmd --zone="$ZONE_NAME"  --add-rich-rule='rule family="ipv4" destination  address="141.22.27.238" drop' --permanent 
-
-
-
-
-
-
-
-
+#sudo firewall-cmd --zone="$ZONE_NAME"  --add-rich-rule='rule family="ipv4" destination  address="141.22.27.238" drop' --permanent 
