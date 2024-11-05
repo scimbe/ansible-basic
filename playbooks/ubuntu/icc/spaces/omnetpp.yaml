@@ -52,4 +52,4 @@
       shell: source setenv 
       args:
         chdir: "{{ install_dir }}"
-
+        executable: /bin/bash
