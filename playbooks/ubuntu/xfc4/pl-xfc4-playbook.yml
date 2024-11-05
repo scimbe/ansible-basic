@@ -1,4 +1,4 @@
-- import_playbook: /config/ansible-ubuntu-basic/playbooks/ubuntu/basics/pl-ubuntu-basic.yml
+
 - name: Xfce customizations
   hosts: localhost
   become: true  # Ermöglicht Root-Zugriff, wo nötig
@@ -82,3 +82,5 @@
       ansible.builtin.user:
         name: abc
         password: "{{ 'mininet' | password_hash('sha512') }}"
+        
+- import_playbook: /config/ansible-ubuntu-basic/playbooks/ubuntu/basics/pl-ubuntu-basic.yml
