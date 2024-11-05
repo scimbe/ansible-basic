@@ -19,7 +19,6 @@
           - bison
           - flex
           - perl
-          - qt5-default
           - tcl-dev
           - tk-dev
           - libxml2-dev
