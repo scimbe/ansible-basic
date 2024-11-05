@@ -3,7 +3,7 @@
   hosts: localhost
   become: true  # Ermöglicht Root-Zugriff, wo nötig
   tasks:
-      - name: Install packages in loop
+    - name: Install packages in loop
       apt:
         name: "{{ item }}"
         state: latest
