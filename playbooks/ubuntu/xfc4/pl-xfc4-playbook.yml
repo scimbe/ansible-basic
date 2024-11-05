@@ -9,7 +9,7 @@
         url: https://scimbe.de/wall/wallpaper-big.png
         dest: /config/wallpaper-scimbe.png
         mode: 0666
-        checksum: "sha256:your-checksum-value"
+
 
     - name: Download Conky configuration
       become_user: abc
