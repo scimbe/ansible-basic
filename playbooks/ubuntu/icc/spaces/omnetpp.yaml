@@ -1,1 +1,76 @@
 
+- name: Installation von OMNeT++ 6.1 und INET 4
+  hosts: localhost
+  become: true
+  vars:
+    omnetpp_version: "6.1"
+    omnetpp_url: "https://github.com/omnetpp/omnetpp/releases/download/omnetpp-6.1/omnetpp-6.1-src-linux.tgz"
+    inet_version: "4.5.4"
+    inet_url: "https://github.com/inet-framework/inet/releases/download/v4.5.4/inet-4.5.4-src.tgz"
+    install_dir: "/opt/omnetpp-{{ omnetpp_version }}"
+
+  tasks:
+    - name: Installiere erforderliche Pakete
+      apt:
+        name:
+          - build-essential
+          - gcc
+          - g++
+          - bison
+          - flex
+          - perl
+          - qt5-default
+          - tcl-dev
+          - tk-dev
+          - libxml2-dev
+          - zlib1g-dev
+          - default-jre
+          - default-jdk
+          - libwebkit2gtk-4.0-37
+          - git
+          - wget
+          - unzip
+        state: present
+        update_cache: yes
+
+    - name: Lade OMNeT++ herunter
+      get_url:
+        url: "{{ omnetpp_url }}"
+        dest: "/tmp/omnetpp-{{ omnetpp_version }}.tgz"
+
+    - name: Entpacke OMNeT++
+      unarchive:
+        src: "/tmp/omnetpp-{{ omnetpp_version }}.tgz"
+        dest: "/opt/"
+        remote_src: yes
+
+    - name: Führe das Installationsskript von OMNeT++ aus
+      command: "./install.sh"
+      args:
+        chdir: "{{ install_dir }}"
+
+    - name: Lade INET herunter
+      get_url:
+        url: "{{ inet_url }}"
+        dest: "{{ install_dir }}/inet-{{ inet_version }}.tgz"
+
+    - name: Entpacke INET
+      unarchive:
+        src: "{{ install_dir }}/inet-{{ inet_version }}.tgz"
+        dest: "{{ install_dir }}/inet"
+        remote_src: yes
+
+    - name: Setze Umgebungsvariablen für OMNeT++
+      shell: source setenv && env
+      args:
+        chdir: "{{ install_dir }}"
+      register: env_output
+
+    - name: Kompiliere INET
+      shell: |
+        source setenv
+        cd inet
+        make makefiles
+        make
+      args:
+        chdir: "{{ install_dir }}"
