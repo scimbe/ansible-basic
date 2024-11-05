@@ -48,28 +48,8 @@
       args:
         chdir: "{{ install_dir }}"
 
-    - name: Lade INET herunter
-      get_url:
-        url: "{{ inet_url }}"
-        dest: "{{ install_dir }}/inet-{{ inet_version }}.tgz"
-
-    - name: Entpacke INET
-      unarchive:
-        src: "{{ install_dir }}/inet-{{ inet_version }}.tgz"
-        dest: "{{ install_dir }}/inet"
-        remote_src: yes
-
     - name: Setze Umgebungsvariablen für OMNeT++
       shell: source setenv && env
       args:
         chdir: "{{ install_dir }}"
       register: env_output
-
-    - name: Kompiliere INET
-      shell: |
-        source setenv
-        cd inet
-        make makefiles
-        make
-      args:
-        chdir: "{{ install_dir }}"
