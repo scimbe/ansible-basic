@@ -69,7 +69,7 @@
       become_user: abc
       git:
         repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
-        dest: /home/abc/.themes
+        dest: /config/.themes
         clone: yes
         update: yes
 
