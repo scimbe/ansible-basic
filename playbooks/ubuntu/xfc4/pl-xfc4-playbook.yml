@@ -1,4 +1,4 @@
-- import_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
+- import_playbook: /config/ansible-ubuntu-basic/playbooks/ubuntu/basics/pl-ubuntu-basic.yml
 - name: Xfce customizations
   hosts: localhost
   become: true  # Ermöglicht Root-Zugriff, wo nötig
