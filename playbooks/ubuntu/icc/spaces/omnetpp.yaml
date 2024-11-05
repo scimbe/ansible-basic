@@ -49,7 +49,7 @@
         chdir: "{{ install_dir }}"
 
     - name: Setze Umgebungsvariablen für OMNeT++
-      shell: source setenv && env
+      shell: source setenv 
       args:
         chdir: "{{ install_dir }}"
-      register: env_output
+
