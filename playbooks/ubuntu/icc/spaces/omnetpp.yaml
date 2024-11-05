@@ -44,7 +44,7 @@
         remote_src: yes
 
     - name: Führe das Installationsskript von OMNeT++ aus
-      command: "./install.sh"
+      command: "./install.sh -y"
       args:
         chdir: "{{ install_dir }}"
 
