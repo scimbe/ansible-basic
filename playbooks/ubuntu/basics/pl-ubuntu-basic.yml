@@ -34,13 +34,3 @@
         - dbus-x11 
         - conky-all
 
-    - name: Überprüfe, ob eine xfce4-Session läuft
-      become: yes
-      shell: "pgrep -x xfce4-session"
-      register: xfce_session
-      ignore_errors: yes
-
-    - name: Starte xfce4, falls nicht bereits gestartet
-      become: no
-      shell: "nohup /usr/bin/startxfce4 >/dev/null 2>&1  &"
-      when: xfce_session.rc != 0
