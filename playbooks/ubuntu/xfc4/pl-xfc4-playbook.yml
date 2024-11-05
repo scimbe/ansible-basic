@@ -2,10 +2,9 @@
   hosts: localhost
   become: true  # Ermöglicht Root-Zugriff, wo nötig
 
-  tasks:
-    - name: Basic apt packages
-      import_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
+  import_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
 
+  tasks:
     - name: Download background with checksum validation
       become_user: abc
       get_url:
