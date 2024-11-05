@@ -2,11 +2,10 @@
   hosts: localhost
   become: true  # Ermöglicht Root-Zugriff, wo nötig
 
-    tasks:
+  tasks:
     - name: basic apt packets
       include_playbook: ../basics/pl-ubuntu-basic.yml
-      
-  tasks:
+
     - name: Download background with checksum validation
       become_user: abc
       get_url:
