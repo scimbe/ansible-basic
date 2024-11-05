@@ -4,7 +4,7 @@
 
   tasks:
     - name: basic apt packets
-      include_playbook: ../basics/pl-ubuntu-basic.yml
+      include_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
 
     - name: Download background with checksum validation
       become_user: abc
