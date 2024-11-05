@@ -3,8 +3,8 @@
   become: true  # Ermöglicht Root-Zugriff, wo nötig
 
   tasks:
-    - name: basic apt packets
-      include_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
+    - name: Basic apt packages
+      import_playbook: /config/ansible-ubuntu-basic/basics/pl-ubuntu-basic.yml
 
     - name: Download background with checksum validation
       become_user: abc
@@ -12,6 +12,7 @@
         url: https://scimbe.de/wall/wallpaper-big.png
         dest: /config/wallpaper-scimbe.png
         mode: 0666
+        checksum: "sha256:your-checksum-value"
 
     - name: Download Conky configuration
       become_user: abc
@@ -68,7 +69,7 @@
       become_user: abc
       git:
         repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/ 
-        dest: ~/.themes
+        dest: /home/abc/.themes
         clone: yes
         update: yes
 
