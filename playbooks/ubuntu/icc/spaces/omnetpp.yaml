@@ -4,7 +4,7 @@
   become: true
   vars:
     omnetpp_version: "6.1"
-    omnetpp_url: "https://github.com/omnetpp/omnetpp/releases/download/omnetpp-6.1/omnetpp-6.1-src-linux.tgz"
+    omnetpp_url: "https://github.com/omnetpp/omnetpp/releases/download/omnetpp-6.1.0/omnetpp-6.1.0-linux-x86_64.tgz"
     inet_version: "4.5.4"
     inet_url: "https://github.com/inet-framework/inet/releases/download/v4.5.4/inet-4.5.4-src.tgz"
     install_dir: "/opt/omnetpp-{{ omnetpp_version }}"
