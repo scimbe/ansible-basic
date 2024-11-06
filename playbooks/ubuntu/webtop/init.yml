@@ -30,6 +30,9 @@
           - wget
           - sshpass
           - conky
+          - psmisc
+          - nano 
+          
         state: present
 
     - name: Start des SSH-Services
