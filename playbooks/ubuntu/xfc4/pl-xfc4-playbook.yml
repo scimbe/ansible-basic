@@ -66,6 +66,13 @@
             - filesystem
             - home
 
+        - name: Disable all desktop icons
+          xfconf:
+            channel: xfce4-desktop
+            property: "/desktop-icons/style"
+            value_type: int
+            value: 0
+            
         - name: Set wallpaper directly
           shell: |
             xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace0/last-image -s "{{ wallpaper.path }}"
