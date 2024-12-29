@@ -4,105 +4,56 @@
 # Author  : AndeOn
 # Version : v0.1
 # License : Distributed under the terms of GNU GPL version 2 
-# 
-# 
-# conky:		https://github.com/brndnmtthws/conky
-# conky Manager:	http://www.teejeetech.in/p/conky-manager.html
 #==============================================================================
 # conky configuration
 
-# Set to yes if you want Conky to be forked in the background
 background yes
-
-# Update interval in seconds
 update_interval 1
-
-# number of cpu samples to average
-# set to 1 to disable averaging
 cpu_avg_samples 2
-
-# number of net samples to average
-# set to 1 to disable averaging
 net_avg_samples 2
-
-# Subtract file system buffers from used memory?
 no_buffers yes
 double_buffer yes
 text_buffer_size 2048
-
-# Add spaces to keep things from moving about?  This only affects certain objects.
 use_spacer right
-
-# This is the number of times Conky will update before quitting.
-# Set to zero to run forever.
 total_run_times 0
 
-# Gap between borders of screen and text
-# same thing as passing -x at command line
+# Position
 gap_x 40
 gap_y 80
-
-# Minimum size of text area
 minimum_size 30 0
 maximum_width 290
 
-
-# Create own window instead of using desktop (required in nautilus)
+# Window Settings
 own_window yes
 own_window_type dock
 own_window_transparent yes
 own_window_argb_visual yes
-own_window_argb_visual no
-own_window_colour 000000
 own_window_argb_value 0
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 
-# Text alignment, other possible values are commented
+# Text alignment
 alignment top_left
-#alignment top_right
-#alignment bottom_left
-#alignment bottom_right
 
-# Draw shades?
+# Graphics settings
 draw_shades no
-
-# Draw outlines?
 draw_outline no
-
-# Draw borders around text
 draw_borders no
 draw_graph_borders no
-
-# Stippled borders?
 stippled_borders 0
-
-# border margins
 border_margin 4
-
-# border width
 border_width 1
 
-
-# Force UTF8? note that UTF8 support required XFT
+# Font settings
 override_utf8_locale yes
-
-# Use Xft?
 use_xft yes
-
-# Xft font when Xft is enabled
 xftfont Bitstream Monospace:size=9
-
-# Text alpha when using Xft
 xftalpha 0.5
-
-# set to yes if you want all text to be in uppercase
 uppercase no
 
-# Default colors and also border colors
+# Colors
 default_color white
 default_shade_color black
 default_outline_color white
-# Shades of Gray
 color1 DDDDDD
 color2 AAAAAA
 color3 888888
@@ -110,11 +61,6 @@ color4 ffa54f # Orange
 color5 77B753 # Green
 color6 3a5153 # DarkGrey
 
-# Header with base system info
-# stuff after 'TEXT' will be formatted on screen
-own_window_argb_value 0
-own_window_argb_visual yes
-own_window_colour 000000
 TEXT
 #SYSTEM DETAILS:
 ${font Monospace:style=Bold:pixelsize=16}${color4}SYSTEM ${color6}${hr 2}
