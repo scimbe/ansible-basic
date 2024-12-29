@@ -23,6 +23,20 @@
         state: latest
         update_cache: true
 
+    - name: Ensure XFCE4 is running
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: ":1"
+        XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
+      shell: |
+        pgrep xfce4-session || xfce4-session &
+      async: 300
+      poll: 0
+
+    - name: Wait for XFCE4 to start
+      wait_for:
+        timeout: 10
+
     - name: Configure desktop environment
       become_user: "{{ desktop_user }}"
       environment:
@@ -52,39 +66,28 @@
             - filesystem
             - home
 
-        - name: Get active monitor name
-          shell: xrandr --listmonitors | grep -v "Monitors" | awk '{print $NF}' | head -n1
-          register: active_monitor
-          changed_when: false
-
-        - name: Set wallpaper for all workspaces
-          block:
-            - name: Get all available monitors
-              shell: xfconf-query -c xfce4-desktop -l | grep monitor
-              register: available_monitors
-              changed_when: false
-        
-            - name: Set wallpaper for each monitor and workspace
-              xfconf:
-                channel: xfce4-desktop
-                property: "/backdrop/screen0/{{ item.0 }}/workspace{{ item.1 }}/last-image"
-                value_type: string
-                value: "{{ wallpaper.path }}"
-              with_nested:
-                - "{{ available_monitors.stdout_lines }}"
-                - [0, 1, 2, 3]
-              ignore_errors: true
-
-        - name: Force desktop reload
+        - name: Set wallpaper directly
           shell: |
-            xfdesktop --quit || true
-            sleep 2
-            xfdesktop &
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace0/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace1/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace2/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace3/last-image -s "{{ wallpaper.path }}"
+
+        - name: Kill existing xfdesktop process
+          shell: killall xfdesktop || true
+          ignore_errors: yes
+
+        - name: Wait for process to end
+          wait_for:
+            timeout: 2
+
+        - name: Start xfdesktop
+          shell: xfdesktop &
           async: 300
           poll: 0
 
         - name: Start Conky
-          shell: nohup conky > /dev/null 2>&1 &
+          shell: killall conky || true; nohup conky > /dev/null 2>&1 &
           args:
             chdir: "/"
 
