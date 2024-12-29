@@ -17,7 +17,7 @@
       become_user: mininet
       get_url:
         url: https://scimbe.de/wall/wallpaper-big.png
-        dest: /config/wallpaper-scimbe.png
+        dest: /headless/wallpaper-scimbe.png
         mode: 0666
 
 
