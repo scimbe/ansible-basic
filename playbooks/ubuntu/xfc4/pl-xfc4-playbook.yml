@@ -58,17 +58,22 @@
           changed_when: false
 
         - name: Set wallpaper for all workspaces
-          xfconf:
-            channel: xfce4-desktop
-            property: "/backdrop/screen0/{{ item.monitor }}/workspace{{ item.workspace }}/last-image"
-            value_type: string
-            value: "{{ wallpaper.path }}"
-          loop: "{{ query('nested', 
-            ['monitorVNC-0', 'monitor0'], 
-            range(0, 4)) 
-          }}"
-          loop_control:
-            label: "Monitor {{ item.0 }} Workspace {{ item.1 }}"
+          block:
+            - name: Get all available monitors
+              shell: xfconf-query -c xfce4-desktop -l | grep monitor
+              register: available_monitors
+              changed_when: false
+        
+            - name: Set wallpaper for each monitor and workspace
+              xfconf:
+                channel: xfce4-desktop
+                property: "/backdrop/screen0/{{ item.0 }}/workspace{{ item.1 }}/last-image"
+                value_type: string
+                value: "{{ wallpaper.path }}"
+              with_nested:
+                - "{{ available_monitors.stdout_lines }}"
+                - [0, 1, 2, 3]
+              ignore_errors: true
 
         - name: Force desktop reload
           shell: |
