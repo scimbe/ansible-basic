@@ -58,8 +58,8 @@ own_window_argb_value 0
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 
 # Text alignment, other possible values are commented
-#alignment top_left
-alignment top_right
+alignment top_left
+#alignment top_right
 #alignment bottom_left
 #alignment bottom_right
 
@@ -151,6 +151,8 @@ ${color4}${font Monospace:style=Bold:pixelsize=12}DISK USAGE ${color6}${hr 2 }
 
 ${color}${font Monospace:style=Bold:pixelsize=11}COMPUTER:${font Monospace:size=7} ${alignr}${fs_used /}/${fs_size /}
 ${alignr}${color2}${fs_used_perc /}% ${color3}${fs_bar 5,120 /}
+
+${color4}${font Monospace:style=Bold:pixelsize=12}INTERNET ${color6}${hr 2 }
 
 ${font Monospace:style=Bold:pixelsize=11}${color}INET:${font Monospace:size=7}
 ${color}This IP: ${alignr} ${color}${addr eth0}
