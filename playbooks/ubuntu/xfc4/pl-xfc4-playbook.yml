@@ -25,6 +25,9 @@
 
     - name: Configure desktop environment
       become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: ":1"
+        XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
       block:
         - name: Download background
           get_url:
@@ -49,15 +52,31 @@
             - filesystem
             - home
 
-        - name: Set wallpaper for all monitors and workspaces
+        - name: Get active monitor name
+          shell: xrandr --listmonitors | grep -v "Monitors" | awk '{print $NF}' | head -n1
+          register: active_monitor
+          changed_when: false
+
+        - name: Set wallpaper for all workspaces
           xfconf:
             channel: xfce4-desktop
-            property: "/backdrop/screen0/{{ item.0 }}/workspace{{ item.1 }}/last-image"
+            property: "/backdrop/screen0/{{ item.monitor }}/workspace{{ item.workspace }}/last-image"
             value_type: string
             value: "{{ wallpaper.path }}"
-          with_nested:
-            - ["monitorVNC-0", "monitor0"]
-            - [0, 1, 2, 3]
+          loop: "{{ query('nested', 
+            ['monitorVNC-0', active_monitor.stdout, 'VNC-0', 'Virtual-0', 'Virtual1'], 
+            range(0, 4)) 
+          }}"
+          loop_control:
+            label: "Monitor {{ item.0 }} Workspace {{ item.1 }}"
+
+        - name: Force desktop reload
+          shell: |
+            xfdesktop --quit || true
+            sleep 2
+            xfdesktop &
+          async: 300
+          poll: 0
 
         - name: Start Conky
           shell: nohup conky > /dev/null 2>&1 &
