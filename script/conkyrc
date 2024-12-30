@@ -1,12 +1,3 @@
-#==============================================================================
-#                               conky Simple
-# Date    : 07/08/2016
-# Author  : AndeOn
-# Version : v0.1
-# License : Distributed under the terms of GNU GPL version 2 
-#==============================================================================
-# conky configuration
-
 background yes
 update_interval 1
 cpu_avg_samples 2
@@ -14,103 +5,85 @@ net_avg_samples 2
 no_buffers yes
 double_buffer yes
 text_buffer_size 2048
-use_spacer right
-total_run_times 0
 
-# Position
-gap_x 40
-gap_y 80
+# Position & Fenster
+own_window yes
+own_window_type 'dock'
+own_window_class 'Conky'
+own_window_argb_visual yes 
+own_window_argb_value 150
+alignment top_right
+gap_x 10 
+gap_y 10
+
 minimum_size 30 0
 maximum_width 290
 
-# Window Settings
-own_window yes
-own_window_type dock
-own_window_transparent yes
-own_window_argb_visual yes
-own_window_argb_value 0
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-
-# Text alignment
-alignment top_left
-
-# Graphics settings
+# Grafik-Einstellungen
 draw_shades no
 draw_outline no
 draw_borders no
-draw_graph_borders no
-stippled_borders 0
-border_margin 4
-border_width 1
+draw_graph_borders yes
 
-# Font settings
-override_utf8_locale yes
+# Font Einstellungen
 use_xft yes
-xftfont Bitstream Monospace:size=9
-xftalpha 0.5
+xftfont Share Tech Mono:size=9
+xftalpha 0.8
 uppercase no
 
-# Colors
-default_color white
-default_shade_color black
-default_outline_color white
-color1 DDDDDD
-color2 AAAAAA
-color3 888888
-color4 ffa54f # Orange
-color5 77B753 # Green
-color6 3a5153 # DarkGrey
+# Farben im LCARS-Stil
+default_color 99ccff # Helles Blau
+color1 ffcc99 # Orange
+color2 ff9966 # Dunkles Orange  
+color3 99ffcc # Türkis
+color4 ffff99 # Gelb
+color5 ff99cc # Pink
+color6 99ccff # Helles Blau
 
 TEXT
-#SYSTEM DETAILS:
-${font Monospace:style=Bold:pixelsize=16}${color4}SYSTEM ${color6}${hr 2}
-${color}${font Monospace:size=7.2}OS: ${alignr}Ubuntu 16.04.1 LTS (Xenial Xerus) - Unity
-KERNEL: $alignr$sysname $kernel ($machine)
-UPTIME: $alignr$uptime
-RUNNING PROCESSES: ${alignr}$processes (${color4}$running_processes Executing${color})
+${color1}${font Share Tech Mono:bold:size=14}LCARS TERMINAL ${color6}${hr 2}
+${color3}${font Share Tech Mono:size=10}Stardate: ${color4}${time %Y%m.%d}
+${color3}System Status: ${color4}${uptime}
+${color3}Active Processes: ${color4}$processes ${color3}(${color4}$running_processes${color3} Active)
 
+${color1}${font Share Tech Mono:bold:size=12}WARP CORE STATUS ${color6}${hr 2}
+${color3}${font Share Tech Mono:size=9}
+Core I Power:${alignr}${color4}${cpu cpu1}% 
+${color5}${cpubar 5,290 cpu1}
+Core II Power:${alignr}${color4}${cpu cpu2}%
+${color5}${cpubar 5,290 cpu2}
 
-${color4}${font Monospace:style=Bold:pixelsize=12}CPU USAGE ${color6}${hr 2 }
-${color}${font Monospace:style=Bold:pixelsize=8}
-CORE I:                        CORE II:${font Monospace:size=6.5}
-${freq}MHz / ${acpitemp}°C ${color3}(${cpu cpu1}%)           ${color}${freq}MHz / ${acpitemp}°C ${color3}(${cpu cpu2}%)
-${cpubar 5,120 cpu1}       ${cpubar 5,120 cpu2}
-${color}1st ${color4}${top name 1}${top cpu 1}%${alignr}${color}1st ${color4}${top name 2}${top cpu 2}%
-${color}2nd ${color}${top name 3}${top cpu 3}%${alignr}${color}2nd ${color}${top name 4}${top cpu 4}%
-${color}3rd ${color1}${top name 5}${top cpu 5}%${alignr}${color}3rd ${color1}${top name 6}${top cpu 6}%
-${color}4th ${color2}${top name 7}${top cpu 7}%${alignr}${color}4th ${color2}${top name 8}${top cpu 8}%
-${color}5th ${color3}${top name 9}${top cpu 9}%${alignr}${color}5th ${color3}${top name 10}${top cpu 10}%
+${color3}Most Active Systems:
+${color4}1: ${top name 1}${alignr}${top cpu 1}%
+${color4}2: ${top name 2}${alignr}${top cpu 2}%
+${color4}3: ${top name 3}${alignr}${top cpu 3}%
 
+${color1}${font Share Tech Mono:bold:size=12}MEMORY BANKS ${color6}${hr 2}
+${color3}${font Share Tech Mono:size=9}
+Used: ${color4}$mem ${color3}/ ${color4}$memmax ${alignr}${color3}($memperc%)
+${color5}${membar 5,290}
 
-${color4}${font Monospace:style=Bold:pixelsize=12}MEMORY USAGE ${color6}${hr 2 }
-${color}${font Monospace:size=6.5}
-$mem / $memmax ($memperc%)
-${color3}${membar 5,120}
-${color}1st ${color4}${top_mem name 1}${top_mem mem 1}% ${alignr}${color}6th ${color3}${top_mem name 6}${top_mem mem 6}%
-${color}2nd ${color}${top_mem name 2}${top_mem mem 2}% ${alignr}${color}7th ${color3}${top_mem name 7}${top_mem mem 7}%
-${color}3rd ${color1}${top_mem name 3}${top_mem mem 3}% ${alignr}${color}8th ${color3}${top_mem name 8}${top_mem mem 8}%
-${color}4th ${color2}${top_mem name 4}${top_mem mem 4}% ${alignr}${color}9th ${color3}${top_mem name 9}${top_mem mem 9}%
-${color}5th ${color3}${top_mem name 5}${top_mem mem 5}% ${alignr}${color}10th ${color3}${top_mem name 10}${top_mem mem 10}%
- 
+${color3}Memory Allocation:
+${color4}1: ${top_mem name 1}${alignr}${top_mem mem 1}%
+${color4}2: ${top_mem name 2}${alignr}${top_mem mem 2}%
+${color4}3: ${top_mem name 3}${alignr}${top_mem mem 3}%
 
-${color4}${font Monospace:style=Bold:pixelsize=12}DISK USAGE ${color6}${hr 2 }
+${color1}${font Share Tech Mono:bold:size=12}STORAGE BANKS ${color6}${hr 2}
+${color3}${font Share Tech Mono:size=9}
+Main Storage:${alignr}${color4}${fs_used /}/${fs_size /}
+${color5}${fs_bar 5,290 /}
 
-${color}${font Monospace:style=Bold:pixelsize=11}COMPUTER:${font Monospace:size=7} ${alignr}${fs_used /}/${fs_size /}
-${alignr}${color2}${fs_used_perc /}% ${color3}${fs_bar 5,120 /}
+${color1}${font Share Tech Mono:bold:size=12}SUBSPACE COMMUNICATIONS ${color6}${hr 2}
+${color3}${font Share Tech Mono:size=9}
+Local Node: ${alignr}${color4}${addr eth0}
 
-${color4}${font Monospace:style=Bold:pixelsize=12}INTERNET ${color6}${hr 2 }
+${color3}Incoming:${alignr}${color4}${downspeed eth0}/s
+${color5}${downspeedgraph eth0 20,290 99ffcc ff99cc}
+${color3}Total: ${alignr}${color4}${totaldown eth0}
 
-${font Monospace:style=Bold:pixelsize=11}${color}INET:${font Monospace:size=7}
-${color}This IP: ${alignr} ${color}${addr eth0}
+${color3}Outgoing:${alignr}${color4}${upspeed eth0}/s
+${color5}${upspeedgraph eth0 20,290 99ffcc ff99cc}
+${color3}Total: ${alignr}${color4}${totalup eth0}
 
-${color}${font Monospace:style=Bold:pixelsize=11}DOWN SPEED:${font Monospace:size=7} ${alignr} ${color2}${downspeed eth0} kb/s 
-${alignr}${color BBCCDD}${downspeedgraph eth0 20,290 EF5A29 EF5A29}
-${color}TOTAL DOWN ${alignr}${totaldown eth0} 
-
-${color}${font Monospace:style=Bold:pixelsize=11}UP SPEED:${font Monospace:size=7} ${alignr} ${color2}${upspeed eth0} kb/s 
-${alignr}${color BBCCDD}${upspeedgraph eth0 20,290 77B753 77B753}
-${color}TOTAL UP ${alignr}${totalup eth0}
-
-
-${color}${font :size=10:style=Bold}${alignc}"CaDS HAW Hamburg"
-${color}${font :size=9}${alignc}(Prof. Dr. Martin Becke)
+${color1}${font Share Tech Mono:bold:size=10}${alignc}USS HAW HAMBURG - NCC-1701
+${color3}${font Share Tech Mono:size=9}${alignc}Captain M. Becke Commanding
