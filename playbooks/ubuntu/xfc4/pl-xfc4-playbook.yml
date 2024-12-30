@@ -6,9 +6,6 @@
      wallpaper:
        url: https://scimbe.de/wall/wallpaper-big.png
        path: /headless/wallpaper-scimbe.png
-     conky:
-       url: https://scimbe.de/script/conky
-       path: /headless/.conkyrc
      theme:
        repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
        name: PRO-dark-XFCE-4.14
@@ -66,12 +63,6 @@
            get_url:
              url: "{{ wallpaper.url }}"
              dest: "{{ wallpaper.path }}"
-             mode: '0666'
- 
-         - name: Download Conky configuration
-           get_url:
-             url: "{{ conky.url }}"
-             dest: "{{ conky.path }}"
              mode: '0666'
  
          - name: Configure desktop icons
