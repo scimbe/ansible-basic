@@ -128,7 +128,7 @@
        become_user: "{{ desktop_user }}"
        environment:
          DISPLAY: ":1"
-         XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
+         XAUTHORITY: "/headless/{{ desktop_user }}/.Xauthority"
        xfconf:
          channel: xfce4-keyboard-shortcuts
          property: "/commands/custom/{{ item.key }}"
@@ -155,7 +155,7 @@
      - name: Enable clipboard manager autostart
        become_user: "{{ desktop_user }}"
        file:
-         path: "/home/{{ desktop_user }}/.config/autostart/xfce4-clipman-plugin-autostart.desktop"
+         path: "/headless/{{ desktop_user }}/.config/autostart/xfce4-clipman-plugin-autostart.desktop"
          src: "/etc/xdg/autostart/xfce4-clipman-plugin-autostart.desktop"
          state: link
          
