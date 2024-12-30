@@ -39,7 +39,6 @@
           - nano
           - net-tools
           - conky-all
-          - ufw
         state: latest
         update_cache: true
 
@@ -113,10 +112,10 @@
           async: 300
           poll: 0
 
-        - name: Start Conky
-          shell: killall conky || true; nohup conky > /dev/null 2>&1 &
-          args:
-            chdir: "/"
+#        - name: Start Conky
+#          shell: killall conky || true; nohup conky > /dev/null 2>&1 &
+#          args:
+#            chdir: "/"
 
         - name: Setup theme
           block:
