@@ -14,6 +14,13 @@
       name: PRO-dark-XFCE-4.14
 
   tasks:
+    - name: Show start notification
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: ":1"
+        DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
+      command: notify-send -u critical "Ansible" "Configuration in progress..." -i system-run -t 0
+
     - name: Install required packages
       apt:
         name: 
@@ -113,3 +120,11 @@
                 property: "/Net/ThemeName"
                 value_type: string
                 value: "{{ theme.name }}"
+
+                
+     - name: Show completion notification
+        become_user: "{{ desktop_user }}"
+        environment:
+          DISPLAY: ":1"
+          DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
+        command: notify-send "Ansible" "Configuration completed!" -i emblem-default
