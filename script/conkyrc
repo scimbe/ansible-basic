@@ -19,7 +19,7 @@ own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 
 
 
-alignment top_right
+alignment top_left
 gap_x 10 
 gap_y 10
 
