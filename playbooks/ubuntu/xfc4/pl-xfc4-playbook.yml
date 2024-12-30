@@ -124,19 +124,7 @@
                  value_type: string
                  value: "{{ theme.name }}"
      
-     - name: Configure XFCE4 keyboard shortcuts
-       become_user: "{{ desktop_user }}"
-       environment:
-         DISPLAY: ":1"
-         XAUTHORITY: "/headless/{{ desktop_user }}/.Xauthority"
-       xfconf:
-         channel: xfce4-keyboard-shortcuts
-         property: "/commands/custom/{{ item.key }}"
-         value_type: string
-         value: "{{ item.value }}"
-       loop:
-         - { key: "<Primary>c", value: "xfce4-clipman" }
-         - { key: "<Primary>v", value: "xfce4-clipman" }
+
      
      - name: Install clipboard manager
        apt:
@@ -145,19 +133,22 @@
            - xfce4-clipman-plugin
          state: present
          update_cache: yes
+
+     - name: Configure XFCE4 keyboard shortcuts
+       become_user: "{{ desktop_user }}"
+       environment:
+         DISPLAY: ":1"
+         XAUTHORITY: "/headless/{{ desktop_user }}/.Xauthority"
+       command: xfconf-query -c xfce4-keyboard-shortcuts -p "/commands/custom/{{ item.key }}" -t string -s "{{ item.value }}"
+       loop:
+         - { key: "<Primary>c", value: "xfce4-clipman" }
+         - { key: "<Primary>v", value: "xfce4-clipman" }
      
      - name: Start clipboard manager
        become_user: "{{ desktop_user }}"
        environment:
          DISPLAY: ":1"
        command: xfce4-clipman
-
-     - name: Enable clipboard manager autostart
-       become_user: "{{ desktop_user }}"
-       file:
-         path: "/headless/{{ desktop_user }}/.config/autostart/xfce4-clipman-plugin-autostart.desktop"
-         src: "/etc/xdg/autostart/xfce4-clipman-plugin-autostart.desktop"
-         state: link
          
      - name: Install OpenSSH Server
        apt:
