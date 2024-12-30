@@ -14,13 +14,24 @@
       name: PRO-dark-XFCE-4.14
 
   tasks:
-    - name: Show start notification
+    - name: Install yad
+      apt:
+        name: yad
+        state: present
+    - name: Start persistent notification
       become_user: "{{ desktop_user }}"
       environment:
         DISPLAY: ":1"
         DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
-      command: notify-send -u critical "Ansible" "Configuration in progress..." -i system-run -t 0
-
+      shell: |
+        yad --notification \
+          --text="Ansible configuration in progress..." \
+          --image=system-run \
+          --command="echo 'Running'" &
+        echo $! > /tmp/notify.pid
+      async: 300
+      poll: 0
+      
     - name: Install required packages
       apt:
         name: 
@@ -123,10 +134,6 @@
 
                 value: "{{ theme.name }}"
 
-    - name: Show completion notification
+    - name: Remove persistent notification
       become_user: "{{ desktop_user }}"
-      environment:
-        DISPLAY: ":1"
-        DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
-      command: notify-send "Ansible" "Configuration completed!" -i emblem-default
-
+      shell: "kill $(cat /tmp/notify.pid) || true"
