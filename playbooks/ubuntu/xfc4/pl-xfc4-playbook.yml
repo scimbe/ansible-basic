@@ -1,19 +1,19 @@
  - name: Xfce customizations
-  hosts: localhost
-  become: true
-  vars:
-    desktop_user: mininet
-    wallpaper:
-      url: https://scimbe.de/wall/wallpaper-big.png
-      path: /headless/wallpaper-scimbe.png
-    conky:
-      url: https://scimbe.de/script/conky
-      path: /headless/.conkyrc
-    theme:
-      repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
-      name: PRO-dark-XFCE-4.14
-    gateway_ip: "{{ ansible_default_ipv4.gateway }}" # Passen Sie diese IP an Ihr Gateway an
-    ssh_port: "4040"
+   hosts: localhost
+   become: true
+   vars:
+     desktop_user: mininet
+     wallpaper:
+       url: https://scimbe.de/wall/wallpaper-big.png
+       path: /headless/wallpaper-scimbe.png
+     conky:
+       url: https://scimbe.de/script/conky
+       path: /headless/.conkyrc
+     theme:
+       repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
+       name: PRO-dark-XFCE-4.14
+     gateway_ip: "{{ ansible_default_ipv4.gateway }}" # Passen Sie diese IP an Ihr Gateway an
+     ssh_port: "4040"
 
   tasks:
     - name: Install x11-utils
