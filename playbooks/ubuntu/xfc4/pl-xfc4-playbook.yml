@@ -121,10 +121,12 @@
                 value_type: string
                 value: "{{ theme.name }}"
 
-                
-     - name: Show completion notification
-        become_user: "{{ desktop_user }}"
-        environment:
-          DISPLAY: ":1"
-          DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
-        command: notify-send "Ansible" "Configuration completed!" -i emblem-default
+                value: "{{ theme.name }}"
+
+    - name: Show completion notification
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: ":1"
+        DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
+      command: notify-send "Ansible" "Configuration completed!" -i emblem-default
+
