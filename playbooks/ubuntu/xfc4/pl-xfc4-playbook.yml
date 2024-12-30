@@ -20,21 +20,20 @@
         state: present
         update_cache: yes
 
-    - name: Install yad
+    - name: Install x11-utils
       apt:
-        name: yad
+        name: x11-utils
         state: present
-    - name: Start persistent notification
+    
+    - name: Show visual notification
       become_user: "{{ desktop_user }}"
       environment:
         DISPLAY: ":1"
-        DBUS_SESSION_BUS_ADDRESS: "unix:path=/run/user/1000/bus"
       shell: |
-        yad --notification \
-          --text="Ansible configuration in progress..." \
-          --image=system-run \
-          --command="echo 'Running'" &
-        echo $! > /tmp/notify.pid
+        (
+          xmessage -center "Ansible configuration in progress..." &
+          echo $! > /tmp/notify.pid
+        )
       async: 300
       poll: 0
       
@@ -140,6 +139,12 @@
 
                 value: "{{ theme.name }}"
 
-    - name: Remove persistent notification
+    - name: Remove notification
       become_user: "{{ desktop_user }}"
-      shell: "kill $(cat /tmp/notify.pid) || true"
+      environment:
+        DISPLAY: ":1"
+      shell: |
+        if [ -f /tmp/notify.pid ]; then
+          kill $(cat /tmp/notify.pid) || true
+          rm /tmp/notify.pid
+        fi
