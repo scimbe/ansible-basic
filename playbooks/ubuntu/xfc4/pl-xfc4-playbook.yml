@@ -157,11 +157,19 @@
         state: present
       loop:
         - { regexp: '^#?Port ', line: 'Port {{ ssh_port }}' }
+        - { regexp: '^#?ListenAddress ', line: 'ListenAddress 0.0.0.0' }
         - { regexp: '^#?PermitRootLogin ', line: 'PermitRootLogin no' }
         - { regexp: '^#?PasswordAuthentication ', line: 'PasswordAuthentication yes' }
         - { regexp: '^#?PubkeyAuthentication ', line: 'PubkeyAuthentication yes' }
         - { regexp: '^#?AllowTcpForwarding ', line: 'AllowTcpForwarding no' }
         - { regexp: '^#?X11Forwarding ', line: 'X11Forwarding no' }
+
+    # ... Rest der Konfiguration wie zuvor ...
+    - name: Add gateway access rule
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "AllowUsers {{ ansible_user }}@{{ gateway_ip }}"
+        state: present
 
     - name: Configure firewall rules for SSH
       ufw:
@@ -177,7 +185,6 @@
 
     - name: Restart SSH service
       command: /etc/init.d/ssh restart
-
 
     - name: Remove notification
       become_user: "{{ desktop_user }}"
