@@ -168,7 +168,7 @@
     - name: Add gateway access rule
       lineinfile:
         path: /etc/ssh/sshd_config
-        line: "AllowUsers {{ ansible_user }}@{{ gateway_ip }}"
+        line: "AllowUsers {{ desktop_user }}@{{ gateway_ip }}"
         state: present
 
     - name: Configure firewall rules for SSH
