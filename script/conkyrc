@@ -8,7 +8,7 @@ text_buffer_size 2048
 
 # Position & Fenster
 own_window yes
-own_window_type 'dock'
+own_window_type 'desktop' # desktop oder dock
 own_window_class 'Conky'
 own_window_argb_visual yes 
 own_window_argb_value 150
