@@ -132,6 +132,64 @@
                 value: "{{ theme.name }}"
 
                 value: "{{ theme.name }}"
+- name: Install and configure OpenSSH Server
+  hosts: localhost
+  become: true
+  vars:
+    gateway_ip: "{{ ansible_default_ipv4.gateway }}" # Passen Sie diese IP an Ihr Gateway an
+    ssh_port: "4040"
+
+  tasks:
+    - name: Install OpenSSH Server
+      apt:
+        name: openssh-server
+        state: present
+        update_cache: yes
+
+    - name: Create SSH configuration backup
+      copy:
+        src: /etc/ssh/sshd_config
+        dest: /etc/ssh/sshd_config.backup
+        remote_src: yes
+        force: no
+
+    - name: Configure SSH Server
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      loop:
+        - { regexp: '^#?Port ', line: 'Port {{ ssh_port }}' }
+        - { regexp: '^#?PermitRootLogin ', line: 'PermitRootLogin no' }
+        - { regexp: '^#?PasswordAuthentication ', line: 'PasswordAuthentication yes' }
+        - { regexp: '^#?PubkeyAuthentication ', line: 'PubkeyAuthentication yes' }
+        - { regexp: '^#?AllowTcpForwarding ', line: 'AllowTcpForwarding no' }
+        - { regexp: '^#?X11Forwarding ', line: 'X11Forwarding no' }
+
+    - name: Add gateway access rule
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "AllowUsers {{ ansible_user }}@{{ gateway_ip }}"
+        state: present
+
+    - name: Configure firewall rules for SSH
+      ufw:
+        rule: allow
+        from_ip: "{{ gateway_ip }}"
+        port: "{{ ssh_port }}"
+        proto: tcp
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: deny
+
+    - name: Restart SSH service
+      service:
+        name: ssh
+        state: restarted
+
 
     - name: Remove notification
       become_user: "{{ desktop_user }}"
