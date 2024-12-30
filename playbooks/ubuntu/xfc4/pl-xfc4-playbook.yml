@@ -181,9 +181,7 @@
         policy: deny
 
     - name: Restart SSH service
-      service:
-        name: sshd
-        state: restarted
+      command: /etc/init.d/ssh restart
 
 
     - name: Remove notification
