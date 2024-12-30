@@ -37,6 +37,7 @@
           - nano
           - net-tools
           - conky-all
+          - ufw
         state: latest
         update_cache: true
 
