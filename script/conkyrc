@@ -46,7 +46,7 @@ ${color3}${font Share Tech Mono:size=10}Stardate: ${color4}${time %Y%m.%d}
 ${color3}System Status: ${color4}${uptime}
 ${color3}Active Processes: ${color4}$processes ${color3}(${color4}$running_processes${color3} Active)
 
-${color1}${font Share Tech Mono:bold:size=12}WARP CORE STATUS ${color6}${hr 2}
+${color1}${font Share Tech Mono:bold:size=12}CADS CORE STATUS ${color6}${hr 2}
 ${color3}${font Share Tech Mono:size=9}
 Core I Power:${alignr}${color4}${cpu cpu1}% 
 ${color5}${cpubar 5,290 cpu1}
@@ -85,5 +85,5 @@ ${color3}Outgoing:${alignr}${color4}${upspeed eth0}/s
 ${color5}${upspeedgraph eth0 20,290 99ffcc ff99cc}
 ${color3}Total: ${alignr}${color4}${totalup eth0}
 
-${color1}${font Share Tech Mono:bold:size=10}${alignc}USS HAW HAMBURG - NCC-1701
-${color3}${font Share Tech Mono:size=9}${alignc}Captain M. Becke Commanding
+${color1}${font Share Tech Mono:bold:size=10}${alignc} HAW HAMBURG - NCC-1701
+${color3}${font Share Tech Mono:size=9}${alignc}Prof M. Becke Commanding
