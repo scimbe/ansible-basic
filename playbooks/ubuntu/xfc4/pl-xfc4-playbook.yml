@@ -14,12 +14,6 @@
       name: PRO-dark-XFCE-4.14
 
   tasks:
-    - name: Add universe repository
-      apt_repository:
-        repo: deb http://deb.debian.org/debian {{ ansible_distribution_release }} universe
-        state: present
-        update_cache: yes
-
     - name: Install x11-utils
       apt:
         name: x11-utils
