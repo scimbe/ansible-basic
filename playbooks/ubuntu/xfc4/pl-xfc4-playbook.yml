@@ -135,12 +135,14 @@
          value_type: string
          value: "{{ item.value }}"
        loop:
-         - { key: "<Primary>c", value: "xfce4-clipman-plugin" }
-         - { key: "<Primary>v", value: "xfce4-clipman-plugin" }
+         - { key: "<Primary>c", value: "xfce4-clipman" }
+         - { key: "<Primary>v", value: "xfce4-clipman" }
      
      - name: Install clipboard manager
        apt:
-         name: xfce4-clipman-plugin
+         name: 
+           - xfce4-clipman
+           - xfce4-clipman-plugin
          state: present
          update_cache: yes
      
@@ -149,7 +151,14 @@
        environment:
          DISPLAY: ":1"
        command: xfce4-clipman
- 
+
+     - name: Enable clipboard manager autostart
+       become_user: "{{ desktop_user }}"
+       file:
+         path: "/home/{{ desktop_user }}/.config/autostart/xfce4-clipman-plugin-autostart.desktop"
+         src: "/etc/xdg/autostart/xfce4-clipman-plugin-autostart.desktop"
+         state: link
+         
      - name: Install OpenSSH Server
        apt:
          name: openssh-server
