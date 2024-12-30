@@ -167,12 +167,6 @@
         - { regexp: '^#?AllowTcpForwarding ', line: 'AllowTcpForwarding no' }
         - { regexp: '^#?X11Forwarding ', line: 'X11Forwarding no' }
 
-    - name: Add gateway access rule
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        line: "AllowUsers {{ desktop_user }}@{{ gateway_ip }}"
-        state: present
-
     - name: Configure firewall rules for SSH
       ufw:
         rule: allow
