@@ -146,18 +146,6 @@
          line: "AllowUsers {{ desktop_user }}@{{ gateway_ip }}"
          state: present
  
-     #- name: Configure firewall rules for SSH
-     #  ufw:
-     #    rule: allow
-     #    from_ip: "{{ gateway_ip }}"
-     #    port: "{{ ssh_port }}"
-     #    proto: tcp
- 
-     #- name: Enable UFW
-     #  ufw:
-     #    state: enabled
-     #    policy: deny
- 
      - name: Restart SSH service
        command: /etc/init.d/ssh restart
  
