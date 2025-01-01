@@ -3,6 +3,7 @@
   become: yes
   vars:
     omnet_version: "6.1.0"
+    omnet_dir: "6.1"
     omnet_install_path: "/headless/omnetpp"
     user: "mininet"
     desktop_user: "mininet"
@@ -84,7 +85,7 @@
         remote_src: yes
 
     - name: Rename and set permissions
-      command: mv /headless/omnetpp-{{ omnet_version }} /headless/omnetpp
+      command: mv /headless/omnetpp-{{  omnet_dir }} /headless/omnetpp
 
     - name: Configure OMNeT++
       shell: |
