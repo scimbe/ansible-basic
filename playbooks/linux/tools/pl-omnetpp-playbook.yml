@@ -64,30 +64,26 @@
         state: present
         update_cache: yes
 
-    - name: Create user headless directory if not exists
-      file:
-        path: "/headless"
-        state: directory
-        owner: "{{ user }}"
-        group: "{{ user }}"
-        mode: '0755'
-
     - name: Download OMNeT++
+      become_user: "{{ desktop_user }}"
       get_url:
         url: "https://github.com/omnetpp/omnetpp/releases/download/omnetpp-{{ omnet_version }}/omnetpp-{{ omnet_version }}-{{ platform }}.tgz"
         dest: "/headless/omnetpp-core.tgz"
         mode: '0644'
 
     - name: Extract OMNeT++
+      become_user: "{{ desktop_user }}"
       unarchive:
         src: "/headless/omnetpp-core.tgz"
         dest: "/headless"
         remote_src: yes
 
     - name: Rename and set permissions
+      become_user: "{{ desktop_user }}"
       command: mv /headless/omnetpp-{{  omnet_dir }} /headless/omnetpp
 
     - name: Configure OMNeT++
+      become_user: "{{ desktop_user }}"
       shell: |
         cd /headless/omnetpp
         source setenv
@@ -96,11 +92,13 @@
         ./configure WITH_OSG=no
 
     - name: Build OMNeT++
+      become_user: "{{ desktop_user }}"
       command: make -j$(nproc)
       args:
         chdir: "/headless/omnetpp"
 
     - name: Set environment variables
+      become_user: "{{ desktop_user }}"
       lineinfile:
         path: "/headless/.bashrc"
         line: |
@@ -110,12 +108,14 @@
         create: yes
 
     - name: Install INET Framework
+      become_user: "{{ desktop_user }}"
       git:
         repo: "https://github.com/inet-framework/inet.git"
         dest: "/headless/inet"
         version: "v4.4"
 
     - name: Build INET Framework
+      become_user: "{{ desktop_user }}"
       shell: |
         cd /headless/inet
         . /headless/omnetpp/setenv
@@ -123,6 +123,7 @@
         make -j$(nproc)
 
     - name: Cleanup temporary files
+      become_user: "{{ desktop_user }}"
       file:
         path: "/headless/omnetpp-core.tgz"
         state: absent
