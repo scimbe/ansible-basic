@@ -90,6 +90,7 @@
     - name: Configure OMNeT++
       shell: |
         cd /headless/omnetpp
+        source setenv
         ./configure WITH_OSG=no
 
     - name: Build OMNeT++
