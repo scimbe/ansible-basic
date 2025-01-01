@@ -139,7 +139,6 @@
          - { regexp: '^#?AllowTcpForwarding ', line: 'AllowTcpForwarding no' }
          - { regexp: '^#?X11Forwarding ', line: 'X11Forwarding no' }
  
-     # ... Rest der Konfiguration wie zuvor ...
      - name: Add gateway access rule
        lineinfile:
          path: /etc/ssh/sshd_config
