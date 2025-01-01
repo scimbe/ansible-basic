@@ -47,6 +47,7 @@
       until: install_result is success
 
     - name: Ensure Visual Studio Code is installed
+      become_user: "{{ desktop_user }}"
       ansible.builtin.command: code --version
       register: vscode_version
       changed_when: false
