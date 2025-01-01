@@ -25,6 +25,12 @@
        async: 300
        poll: 0
 
+     - name: Install ansible by apt
+       apt:
+         name: ansible
+         state: present
+         update_cache: yes
+
      - name: Ensure XFCE4 is running
        become_user: "{{ desktop_user }}"
        environment:
