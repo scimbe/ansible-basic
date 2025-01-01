@@ -48,7 +48,7 @@ color5 ff99cc # Pink
 color6 99ccff # Helles Blau
 
 TEXT
-${color1}${font Share Tech Mono:bold:size=14}LCARS TERMINAL ${color6}${hr 2}
+${color1}${font Share Tech Mono:bold:size=14}$nodename ${color6}${hr 2}
 ${color3}${font Share Tech Mono:size=10}Date: ${color4}${time %Y.%m.%d}
 ${color3}System Status: ${color4}${uptime}
 ${color3}Active Processes: ${color4}$processes ${color3}(${color4}$running_processes${color3} Active)
