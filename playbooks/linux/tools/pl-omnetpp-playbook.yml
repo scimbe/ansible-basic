@@ -1,11 +1,11 @@
 - name: Install OMNeT++ and INET Framework
- hosts: localhost
- become: yes
- vars:
-   omnet_version: "6.1.0"
-   omnet_install_path: "/headless/omnetpp"
-   user: "mininet"
-   desktop_user: "mininet"
+  hosts: localhost
+  become: yes
+  vars:
+    omnet_version: "6.1.0"
+    omnet_install_path: "/headless/omnetpp"
+    user: "mininet"
+    desktop_user: "mininet"
 
  tasks:
    - name: Show visual notification
