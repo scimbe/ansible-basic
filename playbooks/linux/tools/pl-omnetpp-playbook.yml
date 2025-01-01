@@ -91,6 +91,8 @@
       shell: |
         cd /headless/omnetpp
         source setenv
+        python3 -m venv .venv && source ./venv/bin/activate
+        python3 -m pip install -r python/requirements.txt
         ./configure WITH_OSG=no
 
     - name: Build OMNeT++
