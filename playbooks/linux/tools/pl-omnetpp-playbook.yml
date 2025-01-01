@@ -85,6 +85,7 @@
     - name: Configure OMNeT++
       become_user: "{{ desktop_user }}"
       shell: |
+        set -e
         cd /headless/omnetpp
         python3 -m venv /opt/venv
         export PATH="/opt/venv/bin:$PATH"
@@ -99,7 +100,8 @@
         if [ -f python/requirements.txt ]; then pip install -r python/requirements.txt; fi
         if [ -f setenv ]; then . ./setenv; fi 
         ./configure WITH_OSG=no
-
+      args:
+        executable: /bin/bash
     - name: Build OMNeT++
       become_user: "{{ desktop_user }}"
       command: make -j$(nproc)
