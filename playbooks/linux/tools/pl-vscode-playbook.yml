@@ -1,57 +1,60 @@
 - name: Install Visual Studio Code on Debian (aarch64 or x86_64)
-  hosts: all
-  become: true
-  tasks:
-    - name: Show visual notification
-      become_user: "{{ desktop_user }}"
-      environment:
+ hosts: all
+ become: true
+ vars:
+   desktop_user: "mininet"
+
+ tasks:
+   - name: Show visual notification
+     become_user: "{{ desktop_user }}"
+     environment:
        DISPLAY: ":1"
-      shell: |
+     shell: |
        (
          xmessage -center "Ansible configuration in progress..." &
          echo $! > /tmp/notify.pid
        )
-      async: 300
-      poll: 0
+     async: 300
+     poll: 0
 
-    - name: Detect system architecture
-      ansible.builtin.command: uname -m
-      register: arch_output
-      changed_when: false
+   - name: Detect system architecture
+     ansible.builtin.command: uname -m
+     register: arch_output
+     changed_when: false
 
-    - name: Set download URL for aarch64
-      ansible.builtin.set_fact:
-        vscode_url: "https://update.code.visualstudio.com/latest/linux-deb-arm64/stable"
-      when: arch_output.stdout == 'aarch64'
+   - name: Set download URL for aarch64
+     ansible.builtin.set_fact:
+       vscode_url: "https://update.code.visualstudio.com/latest/linux-deb-arm64/stable"
+     when: arch_output.stdout == 'aarch64'
 
-    - name: Set download URL for x86_64
-      ansible.builtin.set_fact:
-        vscode_url: "https://update.code.visualstudio.com/latest/linux-deb-x64/stable"
-      when: arch_output.stdout == 'x86_64'
+   - name: Set download URL for x86_64
+     ansible.builtin.set_fact:
+       vscode_url: "https://update.code.visualstudio.com/latest/linux-deb-x64/stable"
+     when: arch_output.stdout == 'x86_64'
 
-    - name: Download Visual Studio Code package
-      ansible.builtin.get_url:
-        url: "{{ vscode_url }}"
-        dest: "/tmp/vscode.deb"
+   - name: Download Visual Studio Code package
+     ansible.builtin.get_url:
+       url: "{{ vscode_url }}"
+       dest: "/tmp/vscode.deb"
 
-    - name: Install Visual Studio Code
-      ansible.builtin.apt:
-        deb: "/tmp/vscode.deb"
+   - name: Install Visual Studio Code
+     ansible.builtin.apt:
+       deb: "/tmp/vscode.deb"
 
-    - name: Ensure Visual Studio Code is installed
-      ansible.builtin.command: code --version
-      register: vscode_version
-      changed_when: false
+   - name: Ensure Visual Studio Code is installed
+     ansible.builtin.command: code --version
+     register: vscode_version
+     changed_when: false
 
-    - name: Display installed Visual Studio Code version
-      ansible.builtin.debug:
-        msg: "Installed Visual Studio Code version: {{ vscode_version.stdout_lines[0] }}"
-      
-    - name: Remove notification
-      become_user: "{{ desktop_user }}"
-      environment:
+   - name: Display installed Visual Studio Code version
+     ansible.builtin.debug:
+       msg: "Installed Visual Studio Code version: {{ vscode_version.stdout_lines[0] }}"
+     
+   - name: Remove notification
+     become_user: "{{ desktop_user }}"
+     environment:
        DISPLAY: ":1"
-      shell: |
+     shell: |
        if [ -f /tmp/notify.pid ]; then
          kill $(cat /tmp/notify.pid) || true
          rm /tmp/notify.pid
