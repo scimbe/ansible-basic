@@ -103,7 +103,7 @@
         executable: /bin/bash
     - name: Build OMNeT++
       become_user: "{{ desktop_user }}"
-      command: make -j$(nproc)
+      command: make 
       args:
         chdir: "/headless/omnetpp"
 
@@ -130,7 +130,7 @@
         cd /headless/inet
         . /headless/omnetpp/setenv
         make makefiles
-        make -j$(nproc)
+        make 
 
     - name: Cleanup temporary files
       become_user: "{{ desktop_user }}"
