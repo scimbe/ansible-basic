@@ -1,5 +1,5 @@
 - name: Install OMNeT++ and INET Framework
-  hosts: localhost
+  hosts: all
   become: yes
   vars:
     omnet_version: "6.1.0"
