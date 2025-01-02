@@ -103,10 +103,12 @@
         executable: /bin/bash
     - name: Build OMNeT++
       become_user: "{{ desktop_user }}"
-      command: make 
-      args:
-        chdir: "/headless/omnetpp"
-
+      shell: |
+        set -e
+        cd /headless/omnetpp
+        source setenv
+        make
+        
     - name: Set environment variables
       become_user: "{{ desktop_user }}"
       lineinfile:
