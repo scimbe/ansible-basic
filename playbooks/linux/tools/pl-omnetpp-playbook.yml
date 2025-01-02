@@ -121,20 +121,20 @@
         insertafter: EOF
         create: yes
 
-    - name: Install INET Framework
-      become_user: "{{ desktop_user }}"
-      git:
-        repo: "https://github.com/inet-framework/inet.git"
-        dest: "/headless/inet"
-        version: "v4.4"
+ #   - name: Install INET Framework
+ #     become_user: "{{ desktop_user }}"
+ #     git:
+ #       repo: "https://github.com/inet-framework/inet.git"
+ #       dest: "/headless/inet"
+ #       version: "v4.4"
 
-    - name: Build INET Framework
-      become_user: "{{ desktop_user }}"
-      shell: |
-        cd /headless/inet
-        . /headless/omnetpp/setenv
-        make makefiles
-        make 
+ #   - name: Build INET Framework
+ #     become_user: "{{ desktop_user }}"
+ #     shell: |
+ #       cd /headless/inet
+ #       . /headless/omnetpp/setenv
+ #       make makefiles
+ #       make 
 
     - name: Cleanup temporary files
       become_user: "{{ desktop_user }}"
