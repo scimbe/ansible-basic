@@ -87,14 +87,13 @@
       shell: |
         set -e
         cd /headless/omnetpp
-        python3 -m venv /opt/venv
-        export PATH="/opt/venv/bin:$PATH"
+        python3 -m venv .venv
+        export PATH=".venv/bin:$PATH"
         pip install --no-cache-dir --upgrade pip 
         export CCACHE_DIR=/headless/.cache/ccache
         export PATH="/usr/lib/ccache:/headless/omnetpp/bin:${PATH}"
         mkdir -p ${CCACHE_DIR}
         ccache --max-size=5G
-        python3 -m venv .venv 
         . .venv/bin/activate
         pip install --upgrade pip setuptools wheel
         if [ -f python/requirements.txt ]; then pip install -r python/requirements.txt; fi
