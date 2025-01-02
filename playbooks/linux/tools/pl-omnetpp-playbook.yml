@@ -108,6 +108,8 @@
         cd /headless/omnetpp
         source setenv
         make
+      args:
+        executable: /bin/bash
         
     - name: Set environment variables
       become_user: "{{ desktop_user }}"
