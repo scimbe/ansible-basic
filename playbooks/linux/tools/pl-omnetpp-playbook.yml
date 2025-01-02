@@ -97,7 +97,7 @@
         . .venv/bin/activate
         pip install --upgrade pip setuptools wheel
         if [ -f python/requirements.txt ]; then pip install -r python/requirements.txt; fi
-        if [ -f setenv ]; then . ./setenv; fi 
+        source setenv 
         ./configure WITH_OSG=no
       args:
         executable: /bin/bash
