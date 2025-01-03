@@ -16,7 +16,7 @@
      - name: Show visual notification
        become_user: "{{ desktop_user }}"
        environment:
-         DISPLAY: ":1"
+         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
        shell: |
          (
            xmessage -center "Ansible configuration in progress..." &
@@ -34,7 +34,7 @@
      - name: Ensure XFCE4 is running
        become_user: "{{ desktop_user }}"
        environment:
-         DISPLAY: ":1"
+         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
          XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
        shell: |
          pgrep xfce4-session || xfce4-session &
@@ -48,7 +48,7 @@
      - name: Configure desktop environment
        become_user: "{{ desktop_user }}"
        environment:
-         DISPLAY: ":1"
+         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
          XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
        block:
          - name: Download background
@@ -157,7 +157,7 @@
      - name: Remove notification
        become_user: "{{ desktop_user }}"
        environment:
-         DISPLAY: ":1"
+         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
        shell: |
          if [ -f /tmp/notify.pid ]; then
            kill $(cat /tmp/notify.pid) || true
