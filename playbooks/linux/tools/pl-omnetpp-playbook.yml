@@ -12,7 +12,7 @@
     - name: Show visual notification
       become_user: "{{ desktop_user }}"
       environment:
-        DISPLAY: ":1"
+        DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
       shell: |
         (
           xmessage -center "Ansible configuration in progress..." &
@@ -145,7 +145,7 @@
     - name: Remove notification
       become_user: "{{ desktop_user }}"
       environment:
-        DISPLAY: ":1"
+        DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
       shell: |
         if [ -f /tmp/notify.pid ]; then
           kill $(cat /tmp/notify.pid) || true
