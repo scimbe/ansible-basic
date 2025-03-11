@@ -1,159 +1,124 @@
- - name: Xfce customizations
-   hosts: localhost
-   become: true
-   vars:
-     desktop_user: abc
-     wallpaper:
-       url: https://scimbe.de/wall/wallpaper-big.png
-       path: /config/wallpaper-scimbe.png
-     theme:
-       repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
-       name: PRO-dark-XFCE-4.14
-     gateway_ip: "{{ ansible_default_ipv4.gateway }}" # Passen Sie diese IP an Ihr Gateway an
-     ssh_port: "4040"
-
-   tasks:
-     - name: Show visual notification
-       become_user: "{{ desktop_user }}"
-       environment:
-         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
-       shell: |
-         (
-           xmessage -center "Ansible configuration in progress..." &
-           echo $! > /tmp/notify.pid
-         )
-       async: 300
-       poll: 0
-
-     - name: Ensure XFCE4 is running
-       become_user: "{{ desktop_user }}"
-       environment:
-         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
-         XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
-       shell: |
-         pgrep xfce4-session || xfce4-session &
-       async: 300
-       poll: 0
- 
-     - name: Wait for XFCE4 to start
-       wait_for:
-         timeout: 10
- 
-     - name: Configure desktop environment
-       become_user: "{{ desktop_user }}"
-       environment:
-         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
-         XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
-       block:
-         - name: Download background
-           get_url:
-             url: "{{ wallpaper.url }}"
-             dest: "{{ wallpaper.path }}"
-             mode: '0666'
- 
-         - name: Configure desktop icons
-           xfconf:
-             channel: xfce4-desktop
-             property: "/desktop-icons/file-icons/show-{{ item }}"
-             value_type: bool
-             value: "false"
-           loop:
-             - removable
-             - filesystem
-             - home
- 
-         - name: Disable all desktop icons
-           xfconf:
-             channel: xfce4-desktop
-             property: "/desktop-icons/style"
-             value_type: int
-             value: 0
-             
-         - name: Set wallpaper directly
-           shell: |
-             xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace0/last-image -s "{{ wallpaper.path }}"
-             xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace1/last-image -s "{{ wallpaper.path }}"
-             xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace2/last-image -s "{{ wallpaper.path }}"
-             xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace3/last-image -s "{{ wallpaper.path }}"
- 
-         - name: Kill existing xfdesktop process
-           shell: killall xfdesktop || true
-           ignore_errors: yes
- 
-         - name: Wait for process to end
-           wait_for:
-             timeout: 2
- 
-         - name: Start xfdesktop
-           shell: xfdesktop &
-           async: 300
-           poll: 0
- 
-         - name: Start Conky
-           shell: killall conky || true; nohup conky > /dev/null 2>&1 &
-           args:
-             chdir: "/"
- 
-         - name: Setup theme
-           block:
-             - name: Clone theme repository
-               git:
-                 repo: "{{ theme.repo }}"
-                 dest: /config/.themes
-                 clone: yes
-                 update: yes
- 
-             - name: Apply theme
-               xfconf:
-                 channel: xsettings
-                 property: "/Net/ThemeName"
-                 value_type: string
-                 value: "{{ theme.name }}"
+---
+- name: Xfce customizations
+  hosts: localhost
+  become: true
+  vars:
+    desktop_user: abc
+    wallpaper:
+      url: https://scimbe.de/wall/wallpaper-big.png
+      path: /config/wallpaper-scimbe.png
+    theme:
+      repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
+      name: PRO-dark-XFCE-4.14
+    gateway_ip: "{{ ansible_default_ipv4.gateway }}" # Passen Sie diese IP an Ihr Gateway an
+    ssh_port: "4040"
+  tasks:
+    # Neue Tasks hinzugefügt: Verzeichnis erstellen und JDK installieren
+    - name: Create man directory
+      file:
+        path: /usr/share/man/man1
+        state: directory
+        mode: '0755'
+      
+    - name: Install default-jdk
+      apt:
+        name: default-jdk
+        state: present
+        update_cache: yes
     
-         
-     - name: Install OpenSSH Server
-       apt:
-         name: openssh-server
-         state: present
-         update_cache: yes
- 
-     - name: Create SSH configuration backup
-       copy:
-         src: /etc/ssh/sshd_config
-         dest: /etc/ssh/sshd_config.backup
-         remote_src: yes
-         force: no
- 
-     - name: Configure SSH Server
-       lineinfile:
-         path: /etc/ssh/sshd_config
-         regexp: "{{ item.regexp }}"
-         line: "{{ item.line }}"
-         state: present
-       loop:
-         - { regexp: '^#?Port ', line: 'Port {{ ssh_port }}' }
-         - { regexp: '^#?ListenAddress ', line: 'ListenAddress 0.0.0.0' }
-         - { regexp: '^#?PermitRootLogin ', line: 'PermitRootLogin no' }
-         - { regexp: '^#?PasswordAuthentication ', line: 'PasswordAuthentication yes' }
-         - { regexp: '^#?PubkeyAuthentication ', line: 'PubkeyAuthentication yes' }
-         - { regexp: '^#?AllowTcpForwarding ', line: 'AllowTcpForwarding no' }
-         - { regexp: '^#?X11Forwarding ', line: 'X11Forwarding no' }
- 
-     - name: Add gateway access rule
-       lineinfile:
-         path: /etc/ssh/sshd_config
-         line: "AllowUsers {{ desktop_user }}@{{ gateway_ip }}"
-         state: present
- 
-     - name: Restart SSH service
-       command: /etc/init.d/ssh restart
- 
-     - name: Remove notification
-       become_user: "{{ desktop_user }}"
-       environment:
-         DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
-       shell: |
-         if [ -f /tmp/notify.pid ]; then
-           kill $(cat /tmp/notify.pid) || true
-           rm /tmp/notify.pid
-         fi
+    - name: Show visual notification
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
+      shell: |
+        (
+          xmessage -center "Ansible configuration in progress..." &
+          echo $! > /tmp/notify.pid
+        )
+      async: 300
+      poll: 0
+    
+    - name: Ensure XFCE4 is running
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
+        XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
+      shell: |
+        pgrep xfce4-session || xfce4-session &
+      async: 300
+      poll: 0
+    
+    - name: Wait for XFCE4 to start
+      wait_for:
+        timeout: 10
+    
+    - name: Configure desktop environment
+      become_user: "{{ desktop_user }}"
+      environment:
+        DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
+        XAUTHORITY: "/home/{{ desktop_user }}/.Xauthority"
+      block:
+        - name: Download background
+          get_url:
+            url: "{{ wallpaper.url }}"
+            dest: "{{ wallpaper.path }}"
+            mode: '0666'
+    
+        - name: Configure desktop icons
+          xfconf:
+            channel: xfce4-desktop
+            property: "/desktop-icons/file-icons/show-{{ item }}"
+            value_type: bool
+            value: "false"
+          loop:
+            - removable
+            - filesystem
+            - home
+    
+        - name: Disable all desktop icons
+          xfconf:
+            channel: xfce4-desktop
+            property: "/desktop-icons/style"
+            value_type: int
+            value: 0
+            
+        - name: Set wallpaper directly
+          shell: |
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace0/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace1/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace2/last-image -s "{{ wallpaper.path }}"
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVNC-0/workspace3/last-image -s "{{ wallpaper.path }}"
+    
+        - name: Kill existing xfdesktop process
+          shell: killall xfdesktop || true
+          ignore_errors: yes
+    
+        - name: Wait for process to end
+          wait_for:
+            timeout: 2
+    
+        - name: Start xfdesktop
+          shell: xfdesktop &
+          async: 300
+          poll: 0
+    
+        - name: Start Conky
+          shell: killall conky || true; nohup conky > /dev/null 2>&1 &
+          args:
+            chdir: "/"
+    
+        - name: Setup theme
+          block:
+            - name: Clone theme repository
+              git:
+                repo: "{{ theme.repo }}"
+                dest: /config/.themes
+                clone: yes
+                update: yes
+    
+            - name: Apply theme
+              xfconf:
+                channel: xsettings
+                property: "/Net/ThemeName"
+                value_type: string
+                value: "{{ theme.name }}"
