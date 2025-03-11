@@ -135,8 +135,8 @@
         
         - name: Clone vs_script_examples_its repository with submodules
           git:
-            repo: https://github.com/scimbe/vs_script_examples_its
-            dest: /config/home/abc/vs_script_examples_its
+            repo: git://github.com/scimbe/vs_script_examples_its.git
+            dest: /config/vs_script_examples_its
             clone: yes
             recursive: yes  # Das --recurse-submodules Flag im git Befehl
             update: yes
