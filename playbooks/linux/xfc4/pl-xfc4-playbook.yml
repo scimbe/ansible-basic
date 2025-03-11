@@ -133,6 +133,14 @@
                 value_type: string
                 value: "{{ theme.name }}"
         
+        - name: Clone vs_script_examples_its repository with submodules
+          git:
+            repo: https://github.com/scimbe/vs_script_examples_its
+            dest: /config/home/abc/vs_script_examples_its
+            clone: yes
+            recursive: yes  # Das --recurse-submodules Flag im git Befehl
+            update: yes
+    
         - name: Remove notification
           shell: |
             if [ -f /tmp/notify.pid ]; then
