@@ -122,3 +122,13 @@
                 property: "/Net/ThemeName"
                 value_type: string
                 value: "{{ theme.name }}"
+                
+         - name: Remove notification
+           become_user: "{{ desktop_user }}"
+           environment:
+             DISPLAY: "{{ lookup('env', 'DISPLAY') }}"
+           shell: |
+             if [ -f /tmp/notify.pid ]; then
+               kill $(cat /tmp/notify.pid) || true
+               rm /tmp/notify.pid
+             fi
