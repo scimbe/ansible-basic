@@ -2,10 +2,10 @@
    hosts: localhost
    become: true
    vars:
-     desktop_user: mininet
+     desktop_user: abc
      wallpaper:
        url: https://scimbe.de/wall/wallpaper-big.png
-       path: /headless/wallpaper-scimbe.png
+       path: /config/wallpaper-scimbe.png
      theme:
        repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
        name: PRO-dark-XFCE-4.14
@@ -105,7 +105,7 @@
              - name: Clone theme repository
                git:
                  repo: "{{ theme.repo }}"
-                 dest: /headless/.themes
+                 dest: /config/.themes
                  clone: yes
                  update: yes
  
