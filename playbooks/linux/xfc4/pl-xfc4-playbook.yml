@@ -17,6 +17,21 @@
     valid_repo_choices: ['0', 'VS_Pattern', 'VS_Script', 'Alles']
 
   tasks:
+    # Neue Tasks hinzugefügt: Verzeichnis erstellen und JDK installieren
+    - name: Create man directory
+      file:
+        path: /usr/share/man/man1
+        state: directory
+        mode: '0755'
+        recurse: yes  # Stellt sicher, dass alle übergeordneten Verzeichnisse erstellt werden
+      
+    - name: Install default-jdk
+      apt:
+        name: default-jdk
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600  # Vermeidet unnötige Updates, wenn der Cache weniger als 1 Stunde alt ist
+    
     # System aktualisieren
     - name: Update APT package cache
       apt:
