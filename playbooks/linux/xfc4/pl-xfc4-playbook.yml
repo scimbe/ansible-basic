@@ -12,11 +12,23 @@
       name: PRO-dark-XFCE-4.14
     gateway_ip: "{{ ansible_default_ipv4.gateway }}"
     ssh_port: "4040"
-    # Standard Repo-Wahl ist '0', kann über Extra-Vars überschrieben werden
-    repo_choice: "{{ repo_choice_var | default('0') }}"
-    valid_repo_choices: ['0', 'VS_Pattern', 'VS_Script', 'Alles']
+    # Standard Repo-Wahl ist 'Nichts', kann über Extra-Vars überschrieben werden
+    repo_choice: "{{ repo_choice_var | default('Nichts') }}"
+    valid_repo_choices: ['Nichts', 'VS_Pattern', 'VS_Script', 'Alles']
 
   tasks:
+    # System aktualisieren
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Cache ist für eine Stunde gültig
+      
+    - name: Upgrade all packages
+      apt:
+        upgrade: yes
+        autoremove: yes
+        autoclean: yes
+      
     # Überprüfen, ob die Repo-Wahl gültig ist
     - name: Validate repository choice
       fail:
