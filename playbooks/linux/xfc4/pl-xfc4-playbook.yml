@@ -29,7 +29,12 @@
         autoremove: yes
         autoclean: yes
       
-    # Überprüfen, ob die Repo-Wahl gültig ist
+    # Überprüfen, ob die Repo-Wahl gültig ist und default Wert setzen wenn leer
+    - name: Set default repository choice if empty
+      set_fact:
+        repo_choice: "0"
+      when: repo_choice | default('') | trim == ''
+      
     - name: Validate repository choice
       fail:
         msg: "Ungültige Repository-Auswahl: '{{ repo_choice }}'. Gültige Optionen sind: {{ valid_repo_choices | join(', ') }}"
@@ -194,3 +199,8 @@
             fi
           args:
             executable: /bin/bash
+
+# Importiere das VS-Playbook, wenn VS_Pattern ausgewählt ist
+- name: Import VS Playbook
+  import_playbook: ../vs/vs_pattern.yml
+  when: repo_choice == 'VS_Pattern' or repo_choice == 'Alles'
