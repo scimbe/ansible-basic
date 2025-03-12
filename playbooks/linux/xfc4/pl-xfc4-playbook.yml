@@ -12,12 +12,47 @@
       name: PRO-dark-XFCE-4.14
     gateway_ip: "{{ ansible_default_ipv4.gateway }}"
     ssh_port: "4040"
-    # Variable für die Repo-Auswahl
-    repo_option: "{{ repo_choice | default('none') }}"
-  vars_prompt:
-    - name: repo_choice
-      prompt: "Welches Repository soll ausgecheckt werden? (0 für keins, VS_Pattern, VS_Script oder Alles)"
-      private: no
+    valid_repo_choices: ['0', 'VS_Pattern', 'VS_Script', 'Alles']
+
+  # Interaktive Abfrage mit Schleife für gültige Eingabe
+  pre_tasks:
+    - name: Ask for repository choice
+      pause:
+        prompt: "Welches Repository soll ausgecheckt werden? (0 für keins, VS_Pattern, VS_Script oder Alles)"
+      register: repo_choice_input
+      
+    - name: Set initial repo choice
+      set_fact:
+        repo_choice: "{{ repo_choice_input.user_input }}"
+        
+    - name: Check if repo choice is valid
+      set_fact:
+        is_valid_choice: "{{ repo_choice in valid_repo_choices }}"
+        
+    - name: Ask again if invalid choice
+      block:
+        - name: Inform about invalid choice
+          debug:
+            msg: "Ungültige Auswahl: '{{ repo_choice }}'. Gültige Optionen sind: {{ valid_repo_choices | join(', ') }}"
+            
+        - name: Ask for repository choice again
+          pause:
+            prompt: "Bitte eine gültige Option wählen (0, VS_Pattern, VS_Script oder Alles)"
+          register: repo_choice_retry
+          
+        - name: Update repo choice
+          set_fact:
+            repo_choice: "{{ repo_choice_retry.user_input }}"
+            
+        - name: Check if retry choice is valid
+          set_fact:
+            is_valid_choice: "{{ repo_choice in valid_repo_choices }}"
+            
+        - name: Fail if still invalid
+          fail:
+            msg: "Ungültige Auswahl nach zweitem Versuch. Playbook wird beendet."
+          when: not is_valid_choice
+      when: not is_valid_choice
 
   tasks:
     # Neue Tasks hinzugefügt: Verzeichnis erstellen und JDK installieren
@@ -28,6 +63,13 @@
         mode: '0755'
         recurse: yes  # Stellt sicher, dass alle übergeordneten Verzeichnisse erstellt werden
       
+    - name: Install default-jdk
+      apt:
+        name: default-jdk
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600  # Vermeidet unnötige Updates, wenn der Cache weniger als 1 Stunde alt ist
+    
     - name: Show visual notification
       become_user: "{{ desktop_user }}"
       environment:
@@ -133,17 +175,7 @@
                 value_type: string
                 value: "{{ theme.name }}"
         
-        # Überprüfen der Benutzereingabe und Wiederholung bei ungültiger Eingabe
-        - name: Validate repository choice
-          set_fact:
-            valid_choice: "{{ true if repo_choice == '0' or repo_choice == 'VS_Pattern' or repo_choice == 'VS_Script' or repo_choice == 'Alles' else false }}"
-            
-        - name: Display invalid choice message and exit
-          fail:
-            msg: "Ungültige Auswahl. Bitte wählen Sie '0', 'VS_Pattern', 'VS_Script' oder 'Alles'."
-          when: not valid_choice
-        
-        # VS_Pattern Repository auschecken
+        # VS_Pattern Repository auschecken wenn gewünscht
         - name: Clone VS_Pattern repository
           git:
             repo: https://github.com/scimbe/VS_Pattern_By_KI
@@ -153,7 +185,7 @@
             update: yes
           when: repo_choice == 'VS_Pattern' or repo_choice == 'Alles'
         
-        # VS_Script Repository auschecken
+        # VS_Script Repository auschecken wenn gewünscht
         - name: Clone VS_Script repository
           git:
             repo: https://github.com/scimbe/vs_script
@@ -162,15 +194,18 @@
             recursive: yes  # Das --recurse-submodules Flag im git Befehl
             update: yes
           when: repo_choice == 'VS_Script' or repo_choice == 'Alles'
-
-        - name: Install default-jdk
-          apt:
-            name: default-jdk
-            state: present
-            update_cache: yes
-            cache_valid_time: 3600  # Vermeidet unnötige Updates, wenn der Cache weniger als 1 Stunde alt ist
-          when: repo_choice == 'VS_Pattern' or repo_choice == 'Alles'    
-
+        
+        # Meldung ausgeben, welche Repositories ausgecheckt wurden
+        - name: Report cloned repositories
+          debug:
+            msg: "{{ lookup('vars', repo_msg_var) }}"
+          vars:
+            repo_msg_map:
+              '0': "Keine Repositories wurden ausgecheckt."
+              'VS_Pattern': "Das VS_Pattern Repository wurde ausgecheckt."
+              'VS_Script': "Das VS_Script Repository wurde ausgecheckt."
+              'Alles': "Beide Repositories (VS_Pattern und VS_Script) wurden ausgecheckt."
+            repo_msg_var: "repo_msg_map[repo_choice]"
 
         - name: Remove notification
           shell: |
