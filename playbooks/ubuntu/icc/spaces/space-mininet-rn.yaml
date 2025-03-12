@@ -1,6 +1,0 @@
-apiVersion: tenancy.kiosk.sh/v1alpha1
-kind: Space
-metadata:
-  name: mininet-rn
-spec:
-  account: wte586-account
