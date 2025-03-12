@@ -57,6 +57,12 @@
         name: default-jdk
         state: present
       when: repo_choice == 'VS_Pattern' or repo_choice == 'Alles'
+
+    - name: Install maven
+      apt:
+        name: maven
+        state: present
+      when: repo_choice == 'VS_Pattern' or repo_choice == 'Alles'
     
     - name: Show visual notification
       become_user: "{{ desktop_user }}"
