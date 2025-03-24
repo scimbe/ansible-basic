@@ -162,16 +162,46 @@
         clone: yes
         update: yes
 
-    - name: Installieren von searchploit (exploit-db)
+   # Installation der Abhängigkeiten für searchploit
+    - name: Installation der Abhängigkeiten für searchploit
       apt:
-        name: exploitdb
+        name: 
+          - git
+          - python3
+          - python3-pip
+          - libncurses5-dev
+          - libncursesw5-dev
         state: present
         update_cache: yes
       when: ansible_os_family == "Debian"
       
+    # Klonen des Exploit-DB-Repositories
+    - name: Klonen des Exploit-DB-Repositories
+      git:
+        repo: https://github.com/offensive-security/exploitdb.git
+        dest: /opt/exploitdb
+        clone: yes
+        update: yes
+      when: ansible_os_family == "Debian"
+      
+    # Erstellen eines symbolischen Links für searchsploit
+    - name: Symbolischen Link für searchsploit erstellen
+      file:
+        src: /opt/exploitdb/searchsploit
+        dest: /usr/local/bin/searchsploit
+        state: link
+      when: ansible_os_family == "Debian"
+      
+    # Setzen der Berechtigungen für searchsploit
+    - name: Setzen der Berechtigungen für searchsploit
+      file:
+        path: /opt/exploitdb/searchsploit
+        mode: '0755'
+      when: ansible_os_family == "Debian"
+      
     # Aktualisieren der Exploit-Datenbank
     - name: Aktualisieren der Exploit-Datenbank
-      command: searchsploit -u
+      command: /usr/local/bin/searchsploit -u
       changed_when: false
       when: ansible_os_family == "Debian"
 
