@@ -162,6 +162,20 @@
         clone: yes
         update: yes
 
+    - name: Installieren von searchploit (exploit-db)
+      apt:
+        name: exploitdb
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+      
+    # Aktualisieren der Exploit-Datenbank
+    - name: Aktualisieren der Exploit-Datenbank
+      command: searchsploit -u
+      changed_when: false
+      when: ansible_os_family == "Debian"
+
+
     - name: Remove notification
       become_user: "{{ desktop_user }}"
       environment:
