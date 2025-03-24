@@ -153,6 +153,15 @@
  
      - name: Restart SSH service
        command: /etc/init.d/ssh restart
+
+    - name: Git-Repository auschecken
+      become: yes
+      become_user: mininet
+      git:
+        repo: https://github.com/scimbe/rn-practice
+        dest: /headless/
+        clone: yes
+        update: yes
  
      - name: Remove notification
        become_user: "{{ desktop_user }}"
