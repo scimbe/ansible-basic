@@ -178,7 +178,7 @@
     # Klonen des Exploit-DB-Repositories
     - name: Klonen des Exploit-DB-Repositories
       git:
-        repo: https://github.com/exploit-database/exploitdb.git
+        repo: https://gitlab.com/exploit-database/exploitdb
         dest: /opt/exploitdb
         clone: yes
         update: yes
