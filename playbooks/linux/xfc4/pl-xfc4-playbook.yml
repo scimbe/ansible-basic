@@ -161,6 +161,7 @@
         dest: /headless/rn-practice
         clone: yes
         update: yes
+        version: docker
 
    # Installation der Abhängigkeiten für searchploit
     - name: Installation der Abhängigkeiten für searchploit
