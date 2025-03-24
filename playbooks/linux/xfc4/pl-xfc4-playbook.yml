@@ -158,7 +158,7 @@
       become_user: mininet
       git:
         repo: https://github.com/scimbe/rn-practice
-        dest: /headless/
+        dest: /headless/rn-practice
         clone: yes
         update: yes
 
