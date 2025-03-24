@@ -198,13 +198,6 @@
         path: /opt/exploitdb/searchsploit
         mode: '0755'
       when: ansible_os_family == "Debian"
-      
-    # Aktualisieren der Exploit-Datenbank
-    - name: Aktualisieren der Exploit-Datenbank
-      command: /usr/local/bin/searchsploit -u
-      changed_when: false
-      when: ansible_os_family == "Debian"
-
 
     - name: Remove notification
       become_user: "{{ desktop_user }}"
