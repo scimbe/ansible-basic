@@ -4,7 +4,7 @@
   vars:
     desktop_user: mininet
     wallpaper:
-      url: https://scimbe.de/wall/wallpaper-big.png
+      url: https://scimbe.de/wall/wallpaper-pol.jpg
       path: /headless/wallpaper-scimbe.png
     theme:
       repo: https://github.com/paullinuxthemer/PRO-Dark-XFCE-Edition/
