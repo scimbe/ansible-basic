@@ -92,5 +92,5 @@ ${color3}Outgoing:${alignr}${color4}${upspeed eth0}/s
 ${color5}${upspeedgraph eth0 20,290 99ffcc ff99cc}
 ${color3}Total: ${alignr}${color4}${totalup eth0}
 
-${color1}${font Share Tech Mono:bold:size=10}${alignc} HAW HAMBURG - NCC-1701
+${color1}${font Share Tech Mono:bold:size=10}${alignc} DaaS (docker) - NCC-1701
 ${color3}${font Share Tech Mono:size=9}${alignc}Prof M. Becke Commanding
